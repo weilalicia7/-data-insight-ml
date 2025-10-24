@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JP Morgan Data for Good Hackathon - Solution Outline</title>
+    <title>JP Morgan Hackathon - Solution Guide</title>
     <style>
         * {
             margin: 0;
@@ -16,12 +16,11 @@
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
             padding: 20px;
         }
         
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
@@ -37,128 +36,64 @@
         }
         
         header h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
-        header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .nav-container {
-            background: #f8f9fa;
-            padding: 20px;
-            border-bottom: 3px solid #667eea;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-tabs {
+        .tabs {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+            background: #f8f9fa;
+            border-bottom: 3px solid #667eea;
+            overflow-x: auto;
         }
         
-        .nav-tab {
-            padding: 12px 24px;
-            background: white;
-            border: 2px solid #667eea;
-            border-radius: 25px;
+        .tab {
+            padding: 15px 25px;
             cursor: pointer;
-            transition: all 0.3s;
+            border: none;
+            background: none;
+            font-size: 1em;
             font-weight: 600;
             color: #667eea;
+            white-space: nowrap;
+            transition: all 0.3s;
         }
         
-        .nav-tab:hover, .nav-tab.active {
+        .tab:hover, .tab.active {
             background: #667eea;
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
         
         .content {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 20px;
             padding: 30px;
-        }
-        
-        .sidebar {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            height: fit-content;
-            position: sticky;
-            top: 120px;
-        }
-        
-        .sidebar h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-        
-        .sidebar ul {
-            list-style: none;
-        }
-        
-        .sidebar li {
-            padding: 8px 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-            padding-left: 10px;
-        }
-        
-        .sidebar li:hover {
-            color: #667eea;
-            border-left-color: #667eea;
-            padding-left: 15px;
-        }
-        
-        .main-content {
-            max-height: 80vh;
+            max-height: 70vh;
             overflow-y: auto;
-            padding-right: 20px;
         }
         
-        .section {
+        .tab-content {
             display: none;
-            animation: fadeIn 0.5s;
         }
         
-        .section.active {
+        .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        .section h2 {
+        h2 {
             color: #1e3c72;
-            margin: 30px 0 20px 0;
+            margin: 20px 0;
             padding-bottom: 10px;
             border-bottom: 3px solid #667eea;
-            font-size: 2em;
         }
         
-        .section h3 {
+        h3 {
             color: #2a5298;
-            margin: 25px 0 15px 0;
-            font-size: 1.5em;
-        }
-        
-        .section h4 {
-            color: #667eea;
             margin: 20px 0 10px 0;
-            font-size: 1.2em;
         }
         
         .card {
@@ -167,7 +102,6 @@
             padding: 20px;
             margin: 20px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .card.success {
@@ -180,86 +114,68 @@
             background: #fffbf0;
         }
         
-        .card.danger {
-            border-left-color: #dc3545;
-            background: #fff5f5;
-        }
-        
         .card.info {
             border-left-color: #17a2b8;
             background: #f0f9ff;
         }
         
-        .feature-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
             margin: 20px 0;
         }
         
-        .feature-item {
+        .grid-item {
             background: white;
             border: 2px solid #e9ecef;
-            padding: 20px;
-            border-radius: 10px;
-            transition: all 0.3s;
+            padding: 15px;
+            border-radius: 8px;
         }
         
-        .feature-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-            transform: translateY(-5px);
-        }
-        
-        .star-rating {
-            color: #ffc107;
-            font-size: 1.2em;
-        }
-        
-        .checklist {
-            list-style: none;
-            margin: 15px 0;
-        }
-        
-        .checklist li {
-            padding: 10px;
-            margin: 5px 0;
-            background: white;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-        
-        .checklist li:hover {
-            background: #f8f9fa;
-            padding-left: 20px;
-        }
-        
-        .checklist li::before {
-            content: "☐ ";
-            color: #667eea;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
-        .metric-box {
-            display: inline-block;
+        .metric {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 25px;
+            padding: 20px;
             border-radius: 10px;
-            margin: 10px 10px 10px 0;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            margin: 10px 0;
         }
         
-        .code-block {
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        
+        .metric-label {
+            font-size: 1em;
+            margin-top: 5px;
+        }
+        
+        code {
             background: #2d2d2d;
             color: #f8f8f2;
-            padding: 20px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
             border-radius: 8px;
             overflow-x: auto;
             margin: 15px 0;
-            font-family: 'Courier New', monospace;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
         }
         
         .highlight {
@@ -276,590 +192,341 @@
             font-size: 0.85em;
             font-weight: bold;
             margin: 5px 5px 5px 0;
-        }
-        
-        .badge.primary {
             background: #667eea;
             color: white;
         }
         
-        .badge.success {
-            background: #28a745;
-            color: white;
+        .star {
+            color: #ffc107;
         }
         
-        .badge.warning {
-            background: #ffc107;
-            color: #333;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
         }
         
-        .badge.danger {
-            background: #dc3545;
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #667eea;
             color: white;
         }
         
         .timeline {
             border-left: 3px solid #667eea;
-            padding-left: 30px;
+            padding-left: 20px;
             margin: 20px 0;
         }
         
         .timeline-item {
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
         }
         
         .timeline-item::before {
             content: "";
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             background: #667eea;
             border-radius: 50%;
             position: absolute;
-            left: -38px;
+            left: -27px;
             top: 5px;
         }
         
         .timeline-time {
             font-weight: bold;
             color: #667eea;
-            font-size: 1.1em;
-        }
-        
-        .split-screen {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .split-panel {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        footer {
-            background: #1e3c72;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            margin-top: 40px;
-        }
-        
-        .emoji {
-            font-size: 1.3em;
-        }
-        
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                position: relative;
-                top: 0;
-            }
-            
-            .split-screen {
-                grid-template-columns: 1fr;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #764ba2;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="emoji">🏆</span> JP MORGAN DATA FOR GOOD HACKATHON <span class="emoji">🏆</span></h1>
+            <h1>🏆 JP MORGAN DATA FOR GOOD HACKATHON 🏆</h1>
             <p>Mentorship Platform: Automated Matching & Engagement Monitoring</p>
-            <p style="margin-top: 10px; font-size: 0.9em;">Focus: Model Interpretability & Explainability</p>
         </header>
         
-        <div class="nav-container">
-            <div class="nav-tabs">
-                <div class="nav-tab active" onclick="showSection('overview')">Overview</div>
-                <div class="nav-tab" onclick="showSection('challenges')">Challenges</div>
-                <div class="nav-tab" onclick="showSection('features')">Features</div>
-                <div class="nav-tab" onclick="showSection('model')">Model</div>
-                <div class="nav-tab" onclick="showSection('explainability')">Explainability</div>
-                <div class="nav-tab" onclick="showSection('impact')">Impact</div>
-                <div class="nav-tab" onclick="showSection('presentation')">Presentation</div>
-                <div class="nav-tab" onclick="showSection('checklist')">Checklist</div>
-            </div>
+        <div class="tabs">
+            <button class="tab active" onclick="openTab(event, 'overview')">Overview</button>
+            <button class="tab" onclick="openTab(event, 'challenges')">Challenges</button>
+            <button class="tab" onclick="openTab(event, 'features')">Features</button>
+            <button class="tab" onclick="openTab(event, 'model')">Model</button>
+            <button class="tab" onclick="openTab(event, 'explainability')">Explainability</button>
+            <button class="tab" onclick="openTab(event, 'impact')">Impact</button>
+            <button class="tab" onclick="openTab(event, 'presentation')">Presentation</button>
+            <button class="tab" onclick="openTab(event, 'checklist')">Checklist</button>
         </div>
         
         <div class="content">
-            <aside class="sidebar">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li onclick="showSection('overview')">📋 Overview</li>
-                    <li onclick="showSection('challenges')">🎯 Challenges</li>
-                    <li onclick="showSection('features')">🔑 Key Features</li>
-                    <li onclick="showSection('model')">📊 Model Design</li>
-                    <li onclick="showSection('explainability')">🔍 Explainability</li>
-                    <li onclick="showSection('impact')">📈 Business Impact</li>
-                    <li onclick="showSection('presentation')">🎤 Presentation</li>
-                    <li onclick="showSection('checklist')">✅ Checklist</li>
-                </ul>
-            </aside>
-            
-            <main class="main-content">
-                <!-- OVERVIEW SECTION -->
-                <section id="overview" class="section active">
-                    <h2><span class="emoji">📋</span> Project Overview</h2>
-                    
-                    <div class="card info">
-                        <h3>Platform Context</h3>
-                        <p><strong>Connecting over 20,000 students each year</strong> with mentors to help them succeed in their graduate program and job seeking since 2021.</p>
-                    </div>
-                    
-                    <h3>Datasets</h3>
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <h4>📊 Mentors Dataset</h4>
-                            <p><strong>8,398 mentors</strong></p>
-                            <ul>
-                                <li>mentor_id</li>
-                                <li>registration_date</li>
-                                <li>workfield</li>
-                                <li>current_role</li>
-                                <li>needs_to_address</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>🔗 Binomes Dataset</h4>
-                            <p><strong>44,468 matches</strong></p>
-                            <ul>
-                                <li>binome_id</li>
-                                <li>binome_statut (COMPLETED/REJECTED/CANCELLED)</li>
-                                <li>binome_score (7-9)</li>
-                                <li>acceptance_delay</li>
-                                <li>cancellation_reason</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>👥 Mentees Dataset</h4>
-                            <p><strong>51,914 mentees</strong></p>
-                            <ul>
-                                <li>mentee_id</li>
-                                <li>field_of_study</li>
-                                <li>study_level</li>
-                                <li>needs</li>
-                                <li>engagement_score</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <h3>Solution Pipeline</h3>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-time">1. Load Data</div>
-                            <p>Import mentors, binomes, and mentees datasets</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">2. Clean & Merge</div>
-                            <p>Data cleaning, date parsing, merge datasets</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">3. Engineer Features</div>
-                            <p>Create interpretable features (needs overlap, field similarity)</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">4. Train Model</div>
-                            <p>Random Forest for risk prediction</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">5. Analyze Importance</div>
-                            <p>Feature importance and SHAP analysis</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">6. Build Dashboard</div>
-                            <p>Risk monitoring and intervention system</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">7. Matching System</div>
-                            <p>Automated mentor-mentee recommendations</p>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-time">8. Explainability</div>
-                            <p>SHAP visualizations and individual explanations</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card success">
-                        <h3><span class="emoji">🎯</span> Your Unique Selling Point</h3>
-                        <h2 style="color: #28a745; border: none; margin: 10px 0;">"We don't just build models—we build TRUST."</h2>
-                        <p><span class="highlight">Model Interpretability and Explainability</span> is what sets you apart. Every prediction can be explained!</p>
-                    </div>
-                </section>
+            <!-- OVERVIEW TAB -->
+            <div id="overview" class="tab-content active">
+                <h2>📋 Project Overview</h2>
                 
-                <!-- CHALLENGES SECTION -->
-                <section id="challenges" class="section">
-                    <h2><span class="emoji">🎯</span> Hackathon Challenges</h2>
-                    
-                    <div class="split-screen">
-                        <div class="split-panel" style="border-top: 5px solid #dc3545;">
-                            <h3>Challenge 1: Engagement Monitoring</h3>
-                            <p><strong>Problem:</strong> Noticeable decline in engagement and satisfaction among participants</p>
-                            
-                            <h4>Goal:</h4>
-                            <p>Monitor issues and act on them more quickly</p>
-                            
-                            <h4>Approach:</h4>
-                            <ul>
-                                <li>Build risk prediction model</li>
-                                <li>Detect at-risk matches early</li>
-                                <li>Flag matches before cancellation</li>
-                                <li>Recommend specific interventions</li>
-                            </ul>
-                            
-                            <h4>Key Deliverable:</h4>
-                            <div class="badge danger">Early Warning Dashboard</div>
-                            <div class="badge warning">Intervention Playbook</div>
-                        </div>
-                        
-                        <div class="split-panel" style="border-top: 5px solid #28a745;">
-                            <h3>Challenge 2: Automated Matching</h3>
-                            <p><strong>Problem:</strong> Manual matching is slow, subjective, and doesn't scale</p>
-                            
-                            <h4>Goal:</h4>
-                            <p>Develop effective matching model optimizing for satisfaction and profile similarity</p>
-                            
-                            <h4>Approach:</h4>
-                            <ul>
-                                <li>Calculate compatibility scores</li>
-                                <li>Predict success probability</li>
-                                <li>Rank candidates by match quality</li>
-                                <li>Balance multiple factors</li>
-                            </ul>
-                            
-                            <h4>Key Deliverable:</h4>
-                            <div class="badge success">Automated Recommendation Engine</div>
-                            <div class="badge primary">Top-K Matching Algorithm</div>
-                        </div>
-                    </div>
-                    
-                    <div class="card warning">
-                        <h3><span class="emoji">🚨</span> At-Risk Match Indicators</h3>
-                        <div class="split-screen">
-                            <div>
-                                <h4 style="color: #dc3545;">🔴 High Risk Flags:</h4>
-                                <ul>
-                                    <li>Acceptance delay > 100 days</li>
-                                    <li>Needs overlap < 0.2</li>
-                                    <li>Engagement score < 0</li>
-                                    <li>Field similarity = 0</li>
-                                    <li>No response from either party</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 style="color: #ffc107;">🟡 Medium Risk Flags:</h4>
-                                <ul>
-                                    <li>Acceptance delay 50-100 days</li>
-                                    <li>Needs overlap 0.2-0.4</li>
-                                    <li>Engagement score 0-2</li>
-                                    <li>Partial field mismatch</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <h3>Intervention Strategies</h3>
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <h4>For High Acceptance Delay:</h4>
-                            <p>→ Send automated reminders</p>
-                            <p>→ Escalate to human coordinator</p>
-                            <p>→ Offer alternative matches</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>For Low Needs Overlap:</h4>
-                            <p>→ Suggest rematch</p>
-                            <p>→ Provide match reasoning</p>
-                            <p>→ Allow self-selection from top 3</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>For Low Engagement:</h4>
-                            <p>→ Send engagement tips</p>
-                            <p>→ Schedule check-in calls</p>
-                            <p>→ Provide success stories</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>For Field Mismatch:</h4>
-                            <p>→ Highlight cross-domain benefits</p>
-                            <p>→ Suggest supplementary resources</p>
-                            <p>→ Pair with secondary mentor</p>
-                        </div>
-                    </div>
-                </section>
+                <div class="card info">
+                    <h3>Platform Context</h3>
+                    <p><strong>Connecting over 20,000 students each year</strong> with mentors since 2021</p>
+                </div>
                 
-                <!-- FEATURES SECTION -->
-                <section id="features" class="section">
-                    <h2><span class="emoji">🔑</span> Key Features for Modeling</h2>
-                    
-                    <p style="font-size: 1.1em; margin-bottom: 20px;">All features are <span class="highlight">human-understandable and interpretable</span> - critical for building trust!</p>
-                    
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <h4>Feature 1: Needs Overlap Score</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Calculation:</strong> Jaccard similarity between mentor & mentee needs</p>
-                            <p><strong>Why it matters:</strong> Direct alignment = higher satisfaction</p>
-                            <p><strong>Interpretability:</strong> Highly transparent, easy to explain</p>
-                            <div class="code-block">overlap = len(A ∩ B) / len(A ∪ B)</div>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 2: Field Similarity Score</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Calculation:</strong> Exact/partial match between workfield & field_of_study</p>
-                            <p><strong>Why it matters:</strong> Domain expertise alignment</p>
-                            <p><strong>Interpretability:</strong> Clear business logic</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 3: Engagement Score</h4>
-                            <div class="star-rating">⭐⭐</div>
-                            <p><strong>Source:</strong> Mentee engagement_score column</p>
-                            <p><strong>Why it matters:</strong> Predicts participation level</p>
-                            <p><strong>Interpretability:</strong> Pre-existing metric</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 4: Acceptance Delay</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Calculation:</strong> Days between proposal and acceptance</p>
-                            <p><strong>Why it matters:</strong> Strong risk indicator for cancellation</p>
-                            <p><strong>Interpretability:</strong> Time-based, actionable</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 5: Binome Score</h4>
-                            <div class="star-rating">⭐⭐</div>
-                            <p><strong>Source:</strong> Historical match quality rating (7-9)</p>
-                            <p><strong>Why it matters:</strong> Platform's internal quality metric</p>
-                            <p><strong>Interpretability:</strong> Validated by platform data</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 6: Study Level</h4>
-                            <div class="star-rating">⭐</div>
-                            <p><strong>Calculation:</strong> Numeric encoding (Bac+1 to Bac+5+)</p>
-                            <p><strong>Why it matters:</strong> Experience gap consideration</p>
-                            <p><strong>Interpretability:</strong> Ordinal, clear hierarchy</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 7: Program Type</h4>
-                            <div class="star-rating">⭐</div>
-                            <p><strong>Calculation:</strong> Binary (PP vs PNP)</p>
-                            <p><strong>Why it matters:</strong> Different support needs</p>
-                            <p><strong>Interpretability:</strong> Simple categorical</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>Feature 8: Registration Gap</h4>
-                            <div class="star-rating">⭐</div>
-                            <p><strong>Calculation:</strong> Days between mentor & mentee registration</p>
-                            <p><strong>Why it matters:</strong> Timing of availability</p>
-                            <p><strong>Interpretability:</strong> Temporal alignment</p>
-                        </div>
-                    </div>
-                </section>
-                
-                <!-- MODEL SECTION -->
-                <section id="model" class="section">
-                    <h2><span class="emoji">📊</span> Model Architecture</h2>
-                    
-                    <div class="card info">
-                        <h3>Model Choice: Random Forest Classifier</h3>
-                        <h4>Why Random Forest?</h4>
+                <h3>Datasets</h3>
+                <div class="grid">
+                    <div class="grid-item">
+                        <h4>📊 Mentors (8,398)</h4>
                         <ul>
-                            <li>✅ Naturally interpretable (tree-based)</li>
-                            <li>✅ Built-in feature importance</li>
-                            <li>✅ Handles non-linear relationships</li>
-                            <li>✅ Robust to outliers</li>
-                            <li>✅ No complex preprocessing needed</li>
-                            <li>✅ Works with SHAP for explainability</li>
+                            <li>mentor_id</li>
+                            <li>workfield</li>
+                            <li>current_role</li>
+                            <li>needs_to_address</li>
                         </ul>
                     </div>
                     
-                    <h3>Hyperparameters</h3>
-                    <div class="code-block">
+                    <div class="grid-item">
+                        <h4>🔗 Matches (44,468)</h4>
+                        <ul>
+                            <li>binome_statut</li>
+                            <li>binome_score</li>
+                            <li>acceptance_delay</li>
+                            <li>cancellation_reason</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>👥 Mentees (51,914)</h4>
+                        <ul>
+                            <li>field_of_study</li>
+                            <li>study_level</li>
+                            <li>needs</li>
+                            <li>engagement_score</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card success">
+                    <h3>🎯 Your Unique Selling Point</h3>
+                    <h2 style="color: #28a745;">"We don't just build models—we build TRUST."</h2>
+                    <p><span class="highlight">Model Interpretability and Explainability</span> - Every prediction can be explained!</p>
+                </div>
+            </div>
+            
+            <!-- CHALLENGES TAB -->
+            <div id="challenges" class="tab-content">
+                <h2>🎯 Hackathon Challenges</h2>
+                
+                <div class="card warning">
+                    <h3>Challenge 1: Engagement Monitoring</h3>
+                    <p><strong>Problem:</strong> Noticeable decline in engagement and satisfaction</p>
+                    <p><strong>Goal:</strong> Monitor issues and act quickly</p>
+                    <p><strong>Deliverable:</strong> Early Warning Dashboard + Intervention Playbook</p>
+                </div>
+                
+                <div class="card success">
+                    <h3>Challenge 2: Automated Matching</h3>
+                    <p><strong>Problem:</strong> Manual matching is slow and subjective</p>
+                    <p><strong>Goal:</strong> Optimize for satisfaction and profile similarity</p>
+                    <p><strong>Deliverable:</strong> Automated Recommendation Engine</p>
+                </div>
+                
+                <h3>🚨 At-Risk Match Indicators</h3>
+                <div class="grid">
+                    <div class="card" style="border-left-color: #dc3545;">
+                        <h4>🔴 High Risk</h4>
+                        <ul>
+                            <li>Acceptance delay > 100 days</li>
+                            <li>Needs overlap < 0.2</li>
+                            <li>Engagement score < 0</li>
+                            <li>Field similarity = 0</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card" style="border-left-color: #ffc107;">
+                        <h4>🟡 Medium Risk</h4>
+                        <ul>
+                            <li>Acceptance delay 50-100 days</li>
+                            <li>Needs overlap 0.2-0.4</li>
+                            <li>Engagement score 0-2</li>
+                            <li>Partial field mismatch</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Intervention Strategies</h3>
+                <ul>
+                    <li><strong>High Acceptance Delay:</strong> Send reminders, escalate to coordinator</li>
+                    <li><strong>Low Needs Overlap:</strong> Suggest rematch, provide reasoning</li>
+                    <li><strong>Low Engagement:</strong> Send tips, schedule check-ins</li>
+                    <li><strong>Field Mismatch:</strong> Highlight cross-domain benefits</li>
+                </ul>
+            </div>
+            
+            <!-- FEATURES TAB -->
+            <div id="features" class="tab-content">
+                <h2>🔑 Key Features for Modeling</h2>
+                
+                <p>All features are <span class="highlight">human-understandable and interpretable</span></p>
+                
+                <div class="grid">
+                    <div class="grid-item">
+                        <h4>1. Needs Overlap Score</h4>
+                        <p class="star">⭐⭐⭐</p>
+                        <p><strong>Calculation:</strong> Jaccard similarity</p>
+                        <p><strong>Why:</strong> Direct alignment = satisfaction</p>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>2. Field Similarity</h4>
+                        <p class="star">⭐⭐⭐</p>
+                        <p><strong>Calculation:</strong> Text matching</p>
+                        <p><strong>Why:</strong> Domain expertise alignment</p>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>3. Engagement Score</h4>
+                        <p class="star">⭐⭐</p>
+                        <p><strong>Source:</strong> Mentee data</p>
+                        <p><strong>Why:</strong> Predicts participation</p>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>4. Acceptance Delay</h4>
+                        <p class="star">⭐⭐⭐</p>
+                        <p><strong>Calculation:</strong> Days to accept</p>
+                        <p><strong>Why:</strong> Strong risk indicator</p>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>5. Binome Score</h4>
+                        <p class="star">⭐⭐</p>
+                        <p><strong>Source:</strong> Historical rating (7-9)</p>
+                        <p><strong>Why:</strong> Quality metric</p>
+                    </div>
+                    
+                    <div class="grid-item">
+                        <h4>6. Study Level</h4>
+                        <p class="star">⭐</p>
+                        <p><strong>Calculation:</strong> Bac+1 to Bac+5+</p>
+                        <p><strong>Why:</strong> Experience gap</p>
+                    </div>
+                </div>
+                
+                <div class="card info">
+                    <h3>Feature Engineering Example</h3>
+                    <pre>
+def calculate_needs_overlap(mentor_needs, mentee_needs):
+    mentor_set = set(mentor_needs.split(', '))
+    mentee_set = set(mentee_needs.split(', '))
+    
+    overlap = len(mentor_set & mentee_set)
+    union = len(mentor_set | mentee_set)
+    
+    return overlap / union  # Jaccard similarity
+                    </pre>
+                </div>
+            </div>
+            
+            <!-- MODEL TAB -->
+            <div id="model" class="tab-content">
+                <h2>📊 Model Architecture</h2>
+                
+                <div class="card info">
+                    <h3>Model Choice: Random Forest Classifier</h3>
+                    <h4>Why Random Forest?</h4>
+                    <ul>
+                        <li>✅ Naturally interpretable (tree-based)</li>
+                        <li>✅ Built-in feature importance</li>
+                        <li>✅ Handles non-linear relationships</li>
+                        <li>✅ Robust to outliers</li>
+                        <li>✅ Works with SHAP for explainability</li>
+                    </ul>
+                </div>
+                
+                <h3>Hyperparameters</h3>
+                <pre>
 n_estimators: 100
 max_depth: 10
 min_samples_split: 50
 class_weight: 'balanced'
 random_state: 42
-                    </div>
-                    
-                    <h3>Visualizations to Create</h3>
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <h4>1. Feature Importance Bar Chart</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Purpose:</strong> Show which features drive predictions</p>
-                            <p><strong>Audience:</strong> Technical team, stakeholders</p>
-                            <p><strong>Key Insight:</strong> Needs overlap + acceptance delay are top predictors</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>2. SHAP Summary Plot</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Purpose:</strong> Feature impact with direction</p>
-                            <p><strong>Audience:</strong> Data scientists, judges</p>
-                            <p><strong>Key Insight:</strong> How each feature contributes</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>3. Risk Score Distribution</h4>
-                            <div class="star-rating">⭐⭐</div>
-                            <p><strong>Purpose:</strong> Show match risk categories</p>
-                            <p><strong>Audience:</strong> Platform admins</p>
-                            <p><strong>Key Insight:</strong> X% matches are high-risk</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>4. Individual Prediction Explanation</h4>
-                            <div class="star-rating">⭐⭐⭐</div>
-                            <p><strong>Purpose:</strong> "Why this specific recommendation?"</p>
-                            <p><strong>Audience:</strong> End users (mentors, mentees, admins)</p>
-                            <p><strong>Key Insight:</strong> Transparency builds trust!</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>5. Confusion Matrix</h4>
-                            <div class="star-rating">⭐</div>
-                            <p><strong>Purpose:</strong> Model performance breakdown</p>
-                            <p><strong>Audience:</strong> Technical evaluation</p>
-                            <p><strong>Key Insight:</strong> Accuracy, precision, recall</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>6. ROC Curve</h4>
-                            <div class="star-rating">⭐</div>
-                            <p><strong>Purpose:</strong> Model discrimination ability</p>
-                            <p><strong>Audience:</strong> ML evaluation</p>
-                            <p><strong>Key Insight:</strong> AUC score shows predictive power</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card warning">
-                        <h3>Alternative Model</h3>
-                        <p><strong>Gradient Boosting:</strong> Slightly better performance, still interpretable</p>
-                        <p>Consider if you need a performance boost, but Random Forest is recommended for maximum interpretability.</p>
-                    </div>
-                </section>
+                </pre>
                 
-                <!-- EXPLAINABILITY SECTION -->
-                <section id="explainability" class="section">
-                    <h2><span class="emoji">🔍</span> Model Explainability Framework</h2>
-                    
-                    <div class="card success">
-                        <h3 style="text-align: center; font-size: 1.8em; color: #28a745;">THIS IS YOUR COMPETITIVE ADVANTAGE!</h3>
-                        <p style="text-align: center; font-size: 1.2em; margin-top: 10px;">Model Interpretability & Explainability = Your Unique Selling Point</p>
+                <h3>Key Visualizations</h3>
+                <div class="grid">
+                    <div class="grid-item">
+                        <h4>Feature Importance <span class="star">⭐⭐⭐</span></h4>
+                        <p>Which features drive predictions</p>
                     </div>
                     
-                    <h3>Three Levels of Explainability</h3>
-                    
-                    <div class="split-screen">
-                        <div class="split-panel" style="border-top: 5px solid #17a2b8;">
-                            <h4>Level 1: Global Explainability</h4>
-                            <p><strong>Question:</strong> "What matters most overall?"</p>
-                            <p><strong>Method:</strong> Feature importance rankings</p>
-                            <p><strong>Audience:</strong> Strategic decision makers</p>
-                            <div class="badge primary">Feature Importance Charts</div>
-                        </div>
-                        
-                        <div class="split-panel" style="border-top: 5px solid #ffc107;">
-                            <h4>Level 2: Cohort Explainability</h4>
-                            <p><strong>Question:</strong> "What patterns exist in successful matches?"</p>
-                            <p><strong>Method:</strong> SHAP summary plots, partial dependence</p>
-                            <p><strong>Audience:</strong> Platform designers</p>
-                            <div class="badge warning">Pattern Analysis</div>
-                        </div>
+                    <div class="grid-item">
+                        <h4>SHAP Summary <span class="star">⭐⭐⭐</span></h4>
+                        <p>Feature impact with direction</p>
                     </div>
                     
-                    <div class="card info" style="margin-top: 20px;">
-                        <h4>Level 3: Individual Explainability</h4>
-                        <p><strong>Question:</strong> "Why was THIS specific match recommended?"</p>
-                        <p><strong>Method:</strong> SHAP force plots, feature contributions</p>
-                        <p><strong>Audience:</strong> End users (mentors, mentees, admins)</p>
-                        <div class="badge info">Individual Predictions</div>
+                    <div class="grid-item">
+                        <h4>Risk Distribution <span class="star">⭐⭐</span></h4>
+                        <p>Match risk categories</p>
                     </div>
                     
-                    <h3>Trust-Building Elements</h3>
-                    <div class="feature-grid">
-                        <div class="feature-item">
-                            <h4>✅ No Black-Box Models</h4>
-                            <p>Random Forest is interpretable by design. Every split can be traced.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>✅ Every Prediction is Explainable</h4>
-                            <p>SHAP values show exactly why a prediction was made.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>✅ Human-Understandable Features</h4>
-                            <p>No complex embeddings or hidden transformations.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>✅ Admins Can Override</h4>
-                            <p>When context suggests otherwise, decisions can be manually adjusted.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>✅ Auditable Decision Trail</h4>
-                            <p>Every recommendation can be reviewed and justified.</p>
-                        </div>
-                        
-                        <div class="feature-item">
-                            <h4>✅ Fair & Unbiased</h4>
-                            <p>No protected attributes used. Focus on compatibility and engagement.</p>
-                        </div>
+                    <div class="grid-item">
+                        <h4>Individual Explanation <span class="star">⭐⭐⭐</span></h4>
+                        <p>"Why this recommendation?"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- EXPLAINABILITY TAB -->
+            <div id="explainability" class="tab-content">
+                <h2>🔍 Model Explainability Framework</h2>
+                
+                <div class="card success">
+                    <h2 style="text-align: center; color: #28a745;">THIS IS YOUR COMPETITIVE ADVANTAGE!</h2>
+                    <p style="text-align: center; font-size: 1.2em;">Interpretability & Explainability = Your USP</p>
+                </div>
+                
+                <h3>Three Levels of Explainability</h3>
+                
+                <div class="grid">
+                    <div class="card" style="border-left-color: #17a2b8;">
+                        <h4>Level 1: Global</h4>
+                        <p><strong>Question:</strong> What matters overall?</p>
+                        <p><strong>Method:</strong> Feature importance</p>
+                        <p><strong>Audience:</strong> Decision makers</p>
                     </div>
                     
-                    <h3>SHAP Analysis Details</h3>
-                    <div class="card">
-                        <p><strong>SHAP (SHapley Additive exPlanations)</strong> provides:</p>
-                        <ul>
-                            <li><strong>Summary Plot:</strong> Overall feature importance with direction</li>
-                            <li><strong>Bar Plot:</strong> Mean absolute SHAP values (global importance)</li>
-                            <li><strong>Force Plot:</strong> Individual prediction breakdown</li>
-                            <li><strong>Waterfall Plot:</strong> Step-by-step contribution of each feature</li>
-                        </ul>
-                        
-                        <div class="code-block" style="margin-top: 15px;">
-# Example SHAP usage
+                    <div class="card" style="border-left-color: #ffc107;">
+                        <h4>Level 2: Cohort</h4>
+                        <p><strong>Question:</strong> What patterns exist?</p>
+                        <p><strong>Method:</strong> SHAP summary plots</p>
+                        <p><strong>Audience:</strong> Platform designers</p>
+                    </div>
+                    
+                    <div class="card" style="border-left-color: #28a745;">
+                        <h4>Level 3: Individual</h4>
+                        <p><strong>Question:</strong> Why THIS match?</p>
+                        <p><strong>Method:</strong> SHAP force plots</p>
+                        <p><strong>Audience:</strong> End users</p>
+                    </div>
+                </div>
+                
+                <h3>Trust-Building Elements</h3>
+                <ul>
+                    <li>✅ No black-box models</li>
+                    <li>✅ Every prediction is explainable</li>
+                    <li>✅ Human-understandable features</li>
+                    <li>✅ Admins can override decisions</li>
+                    <li>✅ Auditable decision trail</li>
+                    <li>✅ Fair and unbiased</li>
+                </ul>
+                
+                <div class="card info">
+                    <h3>SHAP Analysis</h3>
+                    <pre>
 import shap
+
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_test)
 
@@ -870,351 +537,219 @@ shap.summary_plot(shap_values, X_test)
 shap.force_plot(explainer.expected_value, 
                 shap_values[0], 
                 X_test.iloc[0])
-                        </div>
-                    </div>
-                    
-                    <div class="card success">
-                        <h3>Why This Matters for the Hackathon</h3>
-                        <p><span class="emoji">🏆</span> <strong>Judges love interpretability!</strong> It shows:</p>
-                        <ul>
-                            <li>Deep understanding of the problem</li>
-                            <li>Focus on real-world deployment concerns</li>
-                            <li>Ethical AI considerations</li>
-                            <li>User trust and adoption potential</li>
-                            <li>Stakeholder confidence in the solution</li>
-                        </ul>
-                    </div>
-                </section>
+                    </pre>
+                </div>
+            </div>
+            
+            <!-- IMPACT TAB -->
+            <div id="impact" class="tab-content">
+                <h2>📈 Expected Business Impact</h2>
                 
-                <!-- IMPACT SECTION -->
-                <section id="impact" class="section">
-                    <h2><span class="emoji">📈</span> Expected Business Impact</h2>
-                    
-                    <h3>Quantitative Metrics</h3>
-                    <div class="feature-grid">
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">65% → 80%</div>
-                            <div>Match Success Rate</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">+15% improvement</div>
-                        </div>
-                        
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">14 → 3 days</div>
-                            <div>Time to Match</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">-79% reduction</div>
-                        </div>
-                        
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">20% → 10%</div>
-                            <div>Cancellation Rate</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">-50% reduction</div>
-                        </div>
-                        
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">21 days</div>
-                            <div>Earlier Detection</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">of at-risk matches</div>
-                        </div>
-                        
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">70%</div>
-                            <div>Manual Effort Reduction</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">in coordinator time</div>
-                        </div>
-                        
-                        <div class="metric-box">
-                            <div style="font-size: 2em;">50K+</div>
-                            <div>Scalability</div>
-                            <div style="font-size: 0.9em; opacity: 0.9;">annual matches</div>
-                        </div>
+                <h3>Quantitative Metrics</h3>
+                <div class="grid">
+                    <div class="metric">
+                        <div class="metric-value">65% → 80%</div>
+                        <div class="metric-label">Match Success Rate</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">+15% improvement</div>
                     </div>
                     
-                    <h3>Qualitative Benefits</h3>
-                    <div class="split-screen">
-                        <div class="split-panel">
-                            <h4>For Students (Mentees)</h4>
-                            <ul>
-                                <li>✅ Better mentor matches</li>
-                                <li>✅ Faster matching process</li>
-                                <li>✅ Higher satisfaction</li>
-                                <li>✅ Transparent match reasoning</li>
-                                <li>✅ Proactive support for at-risk matches</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="split-panel">
-                            <h4>For Mentors</h4>
-                            <ul>
-                                <li>✅ More engaged mentees</li>
-                                <li>✅ Better profile alignment</li>
-                                <li>✅ Reduced cancellations</li>
-                                <li>✅ Clearer expectations</li>
-                                <li>✅ Meaningful relationships</li>
-                            </ul>
-                        </div>
+                    <div class="metric">
+                        <div class="metric-value">14 → 3 days</div>
+                        <div class="metric-label">Time to Match</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">-79% reduction</div>
                     </div>
                     
-                    <div class="split-screen">
-                        <div class="split-panel">
-                            <h4>For Platform Admins</h4>
-                            <ul>
-                                <li>✅ Automated matching reduces workload</li>
-                                <li>✅ Early warning system prevents issues</li>
-                                <li>✅ Data-driven decision making</li>
-                                <li>✅ Actionable intervention strategies</li>
-                                <li>✅ Scalable to 50K+ matches</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="split-panel">
-                            <h4>For the Organization</h4>
-                            <ul>
-                                <li>✅ Increased program effectiveness</li>
-                                <li>✅ Better resource allocation</li>
-                                <li>✅ Enhanced reputation</li>
-                                <li>✅ Data-driven insights</li>
-                                <li>✅ Competitive advantage</li>
-                            </ul>
-                        </div>
+                    <div class="metric">
+                        <div class="metric-value">20% → 10%</div>
+                        <div class="metric-label">Cancellation Rate</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">-50% reduction</div>
                     </div>
                     
-                    <div class="card info">
-                        <h3>ROI Calculation Example</h3>
-                        <p><strong>Current State:</strong></p>
-                        <ul>
-                            <li>20,000 matches/year × 2 hours/match = 40,000 hours manual work</li>
-                            <li>20% cancellation rate = 4,000 failed matches</li>
-                        </ul>
-                        
-                        <p style="margin-top: 15px;"><strong>With Automated System:</strong></p>
-                        <ul>
-                            <li>70% time savings = 28,000 hours saved</li>
-                            <li>50% cancellation reduction = 2,000 fewer failures</li>
-                            <li>15% success rate improvement = 3,000 more successful matches</li>
-                        </ul>
-                        
-                        <p style="margin-top: 15px; font-weight: bold; color: #17a2b8; font-size: 1.2em;">
-                            Massive impact on efficiency, satisfaction, and scalability!
-                        </p>
+                    <div class="metric">
+                        <div class="metric-value">21 days</div>
+                        <div class="metric-label">Earlier Detection</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">of at-risk matches</div>
                     </div>
-                </section>
+                    
+                    <div class="metric">
+                        <div class="metric-value">70%</div>
+                        <div class="metric-label">Manual Effort ↓</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">coordinator time saved</div>
+                    </div>
+                    
+                    <div class="metric">
+                        <div class="metric-value">50K+</div>
+                        <div class="metric-label">Scalability</div>
+                        <div style="font-size: 0.9em; opacity: 0.9;">annual matches</div>
+                    </div>
+                </div>
                 
-                <!-- PRESENTATION SECTION -->
-                <section id="presentation" class="section">
-                    <h2><span class="emoji">🎤</span> Presentation Structure</h2>
-                    
-                    <div class="card warning">
-                        <h3>Time Allocation: 10 Minutes Total</h3>
-                        <p>Focus on impact, interpretability, and demos!</p>
-                    </div>
-                    
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 1: Problem Statement (1 min)</div>
-                            <ul>
-                                <li>20,000+ students matched annually</li>
-                                <li>Declining engagement & satisfaction</li>
-                                <li>Manual matching is slow & subjective</li>
-                                <li>Need automated, trustworthy solution</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 2: Our Approach (1 min)</div>
-                            <ul>
-                                <li>Two-part solution: Monitoring + Matching</li>
-                                <li>Interpretable ML (Random Forest)</li>
-                                <li><strong>Explainability as competitive advantage</strong></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 3: Challenge 1 - Early Warning System (2 min)</div>
-                            <ul>
-                                <li>Risk prediction model</li>
-                                <li><strong>Show feature importance chart!</strong></li>
-                                <li>At-risk dashboard demo</li>
-                                <li>Intervention playbook</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 4: Challenge 2 - Automated Matching (2 min)</div>
-                            <ul>
-                                <li>Compatibility scoring algorithm</li>
-                                <li>Success probability predictions</li>
-                                <li>Top-K recommendations</li>
-                                <li>Demo: Match generation</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 5: Model Explainability (2 min) ⭐⭐⭐</div>
-                            <ul>
-                                <li><strong>SHAP analysis - show plots!</strong></li>
-                                <li>Individual prediction explanation</li>
-                                <li>"Why this match?" transparency</li>
-                                <li>Trust through interpretability</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 6: Business Impact (1 min)</div>
-                            <ul>
-                                <li>Key metrics improvement</li>
-                                <li>Scalability benefits</li>
-                                <li>User trust & satisfaction</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">Slide 7: Next Steps & Q&A (1 min)</div>
-                            <ul>
-                                <li>Pilot program recommendations</li>
-                                <li>Integration roadmap</li>
-                                <li>Questions</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="card success">
-                        <h3><span class="emoji">🎯</span> Winning Strategy</h3>
-                        
-                        <h4>Your Competitive Advantages:</h4>
-                        <ol>
-                            <li><strong>Interpretability Focus</strong> (judges love this!)</li>
-                            <li><strong>Actionable Insights</strong> (not just predictions)</li>
-                            <li><strong>Business Impact</strong> (quantified metrics)</li>
-                            <li><strong>Complete Solution</strong> (both challenges addressed)</li>
-                            <li><strong>Trust & Transparency</strong> (ethical AI)</li>
-                        </ol>
-                        
-                        <h4 style="margin-top: 20px;">Key Messages:</h4>
+                <h3>Qualitative Benefits</h3>
+                <div class="grid">
+                    <div class="card">
+                        <h4>For Students</h4>
                         <ul>
-                            <li>"Our model doesn't just predict—it explains WHY"</li>
-                            <li>"Platform admins can trust our recommendations"</li>
-                            <li>"Users understand match reasoning"</li>
-                            <li>"Every decision is auditable and fair"</li>
-                        </ul>
-                        
-                        <h4 style="margin-top: 20px;">Differentiation:</h4>
-                        <div class="split-screen">
-                            <div>
-                                <h4 style="color: #dc3545;">❌ Don't Do:</h4>
-                                <ul>
-                                    <li>Black-box deep learning</li>
-                                    <li>Just accuracy numbers</li>
-                                    <li>Technical metrics only</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h4 style="color: #28a745;">✅ Do Instead:</h4>
-                                <ul>
-                                    <li>Transparent, interpretable ML</li>
-                                    <li>Explainable predictions with SHAP</li>
-                                    <li>Business impact + user trust</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card info">
-                        <h3><span class="emoji">💡</span> Presentation Tips</h3>
-                        <ul>
-                            <li>✅ Lead with the interpretability advantage</li>
-                            <li>✅ Show feature importance plots early</li>
-                            <li>✅ Demo individual prediction explanations</li>
-                            <li>✅ Emphasize trust & transparency</li>
-                            <li>✅ Connect features to business outcomes</li>
-                            <li>✅ Use visuals more than text</li>
-                            <li>✅ Practice the 10-minute timing</li>
-                            <li>✅ Prepare for technical questions</li>
+                            <li>Better mentor matches</li>
+                            <li>Faster matching process</li>
+                            <li>Higher satisfaction</li>
+                            <li>Transparent reasoning</li>
                         </ul>
                     </div>
-                </section>
+                    
+                    <div class="card">
+                        <h4>For Mentors</h4>
+                        <ul>
+                            <li>More engaged mentees</li>
+                            <li>Better profile alignment</li>
+                            <li>Reduced cancellations</li>
+                            <li>Meaningful relationships</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card">
+                        <h4>For Platform</h4>
+                        <ul>
+                            <li>Automated matching</li>
+                            <li>Early warning system</li>
+                            <li>Data-driven decisions</li>
+                            <li>Scalable to 50K+</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PRESENTATION TAB -->
+            <div id="presentation" class="tab-content">
+                <h2>🎤 Presentation Structure (10 Minutes)</h2>
                 
-                <!-- CHECKLIST SECTION -->
-                <section id="checklist" class="section">
-                    <h2><span class="emoji">✅</span> Pre-Hackathon Checklist</h2>
-                    
-                    <div class="split-screen">
-                        <div class="split-panel" style="background: #fff5f5;">
-                            <h3>Tonight (Setup)</h3>
-                            <ul class="checklist">
-                                <li>Install required libraries (pandas, sklearn, shap)</li>
-                                <li>Load and verify all 3 datasets</li>
-                                <li>Run basic data exploration</li>
-                                <li>Test feature engineering functions</li>
-                                <li>Verify model training pipeline</li>
-                                <li>Get good sleep! <span class="emoji">😴</span></li>
-                            </ul>
-                        </div>
-                        
-                        <div class="split-panel" style="background: #fffbf0;">
-                            <h3>Tomorrow Morning (Preparation)</h3>
-                            <ul class="checklist">
-                                <li>Generate all visualizations</li>
-                                <li>Create feature importance plots</li>
-                                <li>Run SHAP analysis</li>
-                                <li>Build risk dashboard</li>
-                                <li>Test matching recommendations</li>
-                                <li>Review code comments</li>
-                            </ul>
-                        </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 1: Problem (1 min)</div>
+                        <p>20K+ students, declining engagement, manual matching</p>
                     </div>
                     
-                    <h3>Tomorrow's Detailed Schedule</h3>
-                    <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-time">8:00 AM - Setup</div>
-                            <p>Load data, verify pipeline works, generate initial visualizations</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">9:00 AM - Model Refinement</div>
-                            <p>Optimize hyperparameters, improve feature engineering, validate results</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">10:00 AM - Explainability Focus</div>
-                            <p>Create SHAP plots, build individual explanations, document interpretability</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">11:00 AM - Visualization Polish</div>
-                            <p>High-quality plots, clear labels & titles, professional formatting</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">12:00 PM - Presentation Prep</div>
-                            <p>Build slide deck, write speaker notes, practice demo</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">1:00 PM - Final Review</div>
-                            <p>Test all code, verify visualizations, rehearse pitch</p>
-                        </div>
-                        
-                        <div class="timeline-item">
-                            <div class="timeline-time">2:00 PM - SHOWTIME! <span class="emoji">🎤</span></div>
-                            <p>Present with confidence - you're ready!</p>
-                        </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 2: Approach (1 min)</div>
+                        <p>Two-part solution with interpretable ML</p>
                     </div>
                     
-                    <h3>During Hackathon Execution</h3>
-                    <ul class="checklist">
-                        <li>Refine model hyperparameters</li>
-                        <li>Create polished visualizations</li>
-                        <li>Write clear code comments</li>
-                        <li>Prepare demo notebook</li>
-                        <li>Build presentation deck</li>
-                        <li>Practice 10-min pitch</li>
-                        <li>Test all demos before presenting</li>
-                        <li>Prepare for Q&A</li>
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 3: Challenge 1 (2 min)</div>
+                        <p>Early warning system, show feature importance!</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 4: Challenge 2 (2 min)</div>
+                        <p>Automated matching, demo recommendations</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 5: Explainability (2 min) ⭐</div>
+                        <p>SHAP analysis, "Why this match?" transparency</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 6: Impact (1 min)</div>
+                        <p>Key metrics, scalability, user trust</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">Slide 7: Q&A (1 min)</div>
+                        <p>Next steps, integration roadmap</p>
+                    </div>
+                </div>
+                
+                <div class="card success">
+                    <h3>Key Messages</h3>
+                    <ul>
+                        <li>"Our model doesn't just predict—it explains WHY"</li>
+                        <li>"Platform admins can trust our recommendations"</li>
+                        <li>"Users understand match reasoning"</li>
+                        <li>"Every decision is auditable and fair"</li>
                     </ul>
+                </div>
+                
+                <div class="card info">
+                    <h3>Presentation Tips</h3>
+                    <ul>
+                        <li>✅ Lead with interpretability advantage</li>
+                        <li>✅ Show feature importance plots early</li>
+                        <li>✅ Demo individual explanations</li>
+                        <li>✅ Emphasize trust & transparency</li>
+                        <li>✅ Use visuals over text</li>
+                        <li>✅ Practice 10-minute timing</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- CHECKLIST TAB -->
+            <div id="checklist" class="tab-content">
+                <h2>✅ Pre-Hackathon Checklist</h2>
+                
+                <div class="grid">
+                    <div class="card warning">
+                        <h3>Tonight (Setup)</h3>
+                        <ul>
+                            <li>☐ Install libraries (pandas, sklearn, shap)</li>
+                            <li>☐ Load and verify datasets</li>
+                            <li>☐ Test feature engineering</li>
+                            <li>☐ Verify model pipeline</li>
+                            <li>☐ Get good sleep! 😴</li>
+                        </ul>
+                    </div>
                     
-                    <h3>Quick Start Commands</h3>
-                    <div class="code-block">
+                    <div class="card success">
+                        <h3>Tomorrow Morning</h3>
+                        <ul>
+                            <li>☐ Generate visualizations</li>
+                            <li>☐ Create feature importance plots</li>
+                            <li>☐ Run SHAP analysis</li>
+                            <li>☐ Build risk dashboard</li>
+                            <li>☐ Test matching system</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>Tomorrow's Schedule</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">8:00 AM - Setup</div>
+                        <p>Load data, verify pipeline, initial visualizations</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">9:00 AM - Model Refinement</div>
+                        <p>Optimize hyperparameters, feature engineering</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">10:00 AM - Explainability</div>
+                        <p>Create SHAP plots, document interpretability</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">11:00 AM - Visualization Polish</div>
+                        <p>High-quality plots, professional formatting</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">12:00 PM - Presentation Prep</div>
+                        <p>Build slide deck, practice demo</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">1:00 PM - Final Review</div>
+                        <p>Test all code, rehearse pitch</p>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-time">2:00 PM - SHOWTIME! 🎤</div>
+                        <p>Present with confidence!</p>
+                    </div>
+                </div>
+                
+                <h3>Quick Start Commands</h3>
+                <pre>
 # Install Dependencies
 pip install pandas numpy matplotlib seaborn scikit-learn shap
 
@@ -1225,67 +760,34 @@ df_mentees = pd.read_csv('mentees.csv')
 
 # Run Pipeline
 main()
-
-# Outputs Created:
-# - feature_importance.png
-# - risk_dashboard.png
-# - shap_summary.png
-# - shap_importance.png
-                    </div>
-                    
-                    <div class="card success" style="margin-top: 30px;">
-                        <h2 style="text-align: center; color: #28a745; border: none;"><span class="emoji">🚀</span> YOU'RE READY FOR THE HACKATHON! <span class="emoji">🚀</span></h2>
-                        <h3 style="text-align: center; margin-top: 15px;">Remember Your USP:</h3>
-                        <p style="text-align: center; font-size: 1.3em; font-weight: bold; margin-top: 10px;">
-                            "We don't just build models—we build TRUST."
-                        </p>
-                        <p style="text-align: center; margin-top: 15px;">
-                            Every decision our system makes can be explained to platform administrators, mentors, mentees, and judges.
-                        </p>
-                        <h3 style="text-align: center; margin-top: 20px; color: #28a745;">
-                            Transparency = Trust = Success
-                        </h3>
-                        <p style="text-align: center; margin-top: 20px; font-size: 1.1em;">
-                            <strong>Final tip:</strong> Start with the SHAP plots in your presentation.<br>
-                            They're visually impressive AND demonstrate your competitive advantage!
-                        </p>
-                        <h2 style="text-align: center; margin-top: 30px; font-size: 2.5em; color: #667eea; border: none;">
-                            <span class="emoji">🏆</span> GO WIN THIS HACKATHON! <span class="emoji">🏆</span>
-                        </h2>
-                    </div>
-                </section>
-            </main>
+                </pre>
+                
+                <div class="card success" style="text-align: center; padding: 30px;">
+                    <h2 style="color: #28a745;">🚀 YOU'RE READY! 🚀</h2>
+                    <h3 style="margin: 20px 0;">"We don't just build models—we build TRUST."</h3>
+                    <p style="font-size: 1.1em;">Transparency = Trust = Success</p>
+                    <h2 style="margin-top: 30px; color: #667eea;">🏆 GO WIN THIS HACKATHON! 🏆</h2>
+                </div>
+            </div>
         </div>
-        
-        <footer>
-            <p style="font-size: 1.2em; margin-bottom: 10px;"><strong>Good Luck, Alicia!</strong></p>
-            <p>Focus on interpretability—that's your winning edge.</p>
-            <p style="margin-top: 20px; opacity: 0.8;">JP Morgan Data for Good Hackathon 2025</p>
-        </footer>
     </div>
     
     <script>
-        function showSection(sectionId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
             
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.nav-tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
             
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
             
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-            
-            // Scroll to top of main content
-            document.querySelector('.main-content').scrollTop = 0;
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
     </script>
 </body>
