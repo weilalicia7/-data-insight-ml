@@ -1111,7 +1111,7 @@
             const features = [
                 { 
                     name: 'Engagement Score', 
-                    value: 28, 
+                    value: 24.2, 
                     explanation: `Score of ${data.engagement} ${data.engagement < 1 ? 'falls in critical zone where 70% of mentees struggle - this is the #1 predictor of failure' : data.engagement < 2 ? 'shows early warning signs - needs monitoring' : data.engagement < 3 ? 'indicates moderate participation - room for growth' : 'demonstrates healthy engagement - strong foundation'}` 
                 },
                 { 
@@ -1121,12 +1121,12 @@
                 },
                 { 
                     name: 'Work Field', 
-                    value: 18, 
+                    value: 15.6, 
                     explanation: `${data.workfield} shows ${getFieldFailureRate(data.workfield)} historical failure rate. ${data.workfield === 'Computer science' ? '583 mentees compete for limited mentors - severe oversaturation problem.' : data.workfield === 'Teaching-education' ? 'Best field with abundant mentors and aligned expectations.' : 'Field-specific mentor availability impacts match quality.'}` 
                 },
                 { 
                     name: 'Study Level (NEW)', 
-                    value: 8, 
+                    value: 7.8, 
                     explanation: `${data.studyLevel} students have ${getStudyFailureRate(data.studyLevel)} failure rate. ${data.studyLevel === 'Bac+1' ? '1,050/month peak volume, first-year uncertainty, 60% fail - highest risk cohort.' : data.studyLevel === 'Bac+5 and plus' ? 'Graduate level clarity and focus yield 38% failure rate - best outcomes.' : 'Educational stage affects career certainty and support needs.'}` 
                 },
                 { 
