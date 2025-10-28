@@ -703,6 +703,117 @@ def clean_and_predict():
         # Apply cleaning based on approved suggestions
         cleaning_log = []
 
+        # Process custom template commands if provided
+        if custom_notes and custom_notes.strip():
+            command_lines = custom_notes.strip().split('\n')
+            for line in command_lines:
+                line = line.strip()
+                if not line or line.startswith('#'):  # Skip empty lines and comments
+                    continue
+
+                try:
+                    # FILTER: condition (e.g., FILTER: age < 100)
+                    if line.upper().startswith('FILTER:'):
+                        condition = line[7:].strip()
+                        before_count = len(df)
+                        # Safe evaluation using query
+                        df = df.query(condition)
+                        after_count = len(df)
+                        cleaning_log.append(f'✓ FILTER: Removed {before_count - after_count} rows where NOT ({condition})')
+
+                    # FILL: column WITH value (e.g., FILL: income WITH 0)
+                    elif line.upper().startswith('FILL:'):
+                        parts = line[5:].strip().split(' WITH ')
+                        if len(parts) == 2:
+                            col = parts[0].strip()
+                            value = parts[1].strip()
+                            if col in df.columns:
+                                missing_count = df[col].isnull().sum()
+                                # Try to convert value to appropriate type
+                                if value.lower() == 'median' and df[col].dtype in ['float64', 'int64']:
+                                    df[col].fillna(df[col].median(), inplace=True)
+                                elif value.lower() == 'mean' and df[col].dtype in ['float64', 'int64']:
+                                    df[col].fillna(df[col].mean(), inplace=True)
+                                elif value.lower() == 'mode':
+                                    mode_val = df[col].mode()[0] if len(df[col].mode()) > 0 else None
+                                    df[col].fillna(mode_val, inplace=True)
+                                else:
+                                    # Try numeric conversion, fall back to string
+                                    try:
+                                        if df[col].dtype in ['float64', 'int64']:
+                                            value = float(value)
+                                    except:
+                                        pass
+                                    df[col].fillna(value, inplace=True)
+                                cleaning_log.append(f'✓ FILL: Filled {missing_count} missing values in "{col}" with {value}')
+                            else:
+                                cleaning_log.append(f'⚠ FILL: Column "{col}" not found')
+
+                    # DROP: column (e.g., DROP: temporary_column)
+                    elif line.upper().startswith('DROP:'):
+                        col = line[5:].strip()
+                        if col in df.columns:
+                            df.drop(columns=[col], inplace=True)
+                            cleaning_log.append(f'✓ DROP: Removed column "{col}"')
+                        else:
+                            cleaning_log.append(f'⚠ DROP: Column "{col}" not found')
+
+                    # REPLACE: column OLD WITH NEW (e.g., REPLACE: gender M WITH Male)
+                    elif line.upper().startswith('REPLACE:'):
+                        parts = line[8:].strip().split(' WITH ')
+                        if len(parts) == 2:
+                            col_and_old = parts[0].strip().split(' ', 1)
+                            if len(col_and_old) == 2:
+                                col = col_and_old[0].strip()
+                                old_value = col_and_old[1].strip()
+                                new_value = parts[1].strip()
+                                if col in df.columns:
+                                    # Try numeric conversion if column is numeric
+                                    try:
+                                        if df[col].dtype in ['float64', 'int64']:
+                                            old_value = float(old_value)
+                                            new_value = float(new_value)
+                                    except:
+                                        pass
+                                    count = (df[col] == old_value).sum()
+                                    df[col] = df[col].replace(old_value, new_value)
+                                    cleaning_log.append(f'✓ REPLACE: Replaced {count} occurrences of "{old_value}" with "{new_value}" in "{col}"')
+                                else:
+                                    cleaning_log.append(f'⚠ REPLACE: Column "{col}" not found')
+
+                    # RENAME: old_column TO new_column
+                    elif line.upper().startswith('RENAME:'):
+                        parts = line[7:].strip().split(' TO ')
+                        if len(parts) == 2:
+                            old_col = parts[0].strip()
+                            new_col = parts[1].strip()
+                            if old_col in df.columns:
+                                df.rename(columns={old_col: new_col}, inplace=True)
+                                cleaning_log.append(f'✓ RENAME: Renamed column "{old_col}" to "{new_col}"')
+                            else:
+                                cleaning_log.append(f'⚠ RENAME: Column "{old_col}" not found')
+
+                    # CLIP: column MIN MAX (e.g., CLIP: age 0 120)
+                    elif line.upper().startswith('CLIP:'):
+                        parts = line[5:].strip().split()
+                        if len(parts) == 3:
+                            col = parts[0].strip()
+                            min_val = float(parts[1])
+                            max_val = float(parts[2])
+                            if col in df.columns and df[col].dtype in ['float64', 'int64']:
+                                clipped_count = ((df[col] < min_val) | (df[col] > max_val)).sum()
+                                df[col] = df[col].clip(min_val, max_val)
+                                cleaning_log.append(f'✓ CLIP: Clipped {clipped_count} values in "{col}" to range [{min_val}, {max_val}]')
+                            else:
+                                cleaning_log.append(f'⚠ CLIP: Column "{col}" not found or not numeric')
+
+                    else:
+                        # Unknown command - log as note
+                        cleaning_log.append(f'📝 Note: {line}')
+
+                except Exception as e:
+                    cleaning_log.append(f'❌ Error in command "{line}": {str(e)}')
+
         for suggestion in approved_suggestions:
             if not suggestion.get('approved', False):
                 continue

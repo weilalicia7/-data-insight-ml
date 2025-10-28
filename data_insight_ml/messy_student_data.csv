@@ -1,0 +1,54 @@
+student_id,student_name,age,grade_level,attendance_rate,gpa,absences_per_month,parent_involvement,economic_status,behavioral_incidents,extracurricular_activities,tutoring_hours,family_size
+STU1001,John Smith,15.0,9,0.85,3.5,2.0,Low,Low Income,0.0,2.0,2.5,4.0
+STU1002,mary johnson,16.0,10,0.92,3.8,1.0,High,Middle Income,1.0,3.0,,5.0
+STU1003,  Sarah Davis  ,,11,,2.9,3.0,medium,,2.0,1.0,3.0,3.0
+STU1004,MIKE WILSON,17.0,12,0.78,,4.0,LOW,low income,,,1.5,
+STU1005,Emma Brown,14.0,9,1.5,3.2,,Medium,HIGH INCOME,1.0,2.0,4.0,4.0
+STU1006,James Lee,18.0,12,0.88,3.9,2.0,,Middle Income,0.0,4.0,,5.0
+STU1007,sophia garcia,16.0,10,0.91,3.6,1.0,high,Low Income,2.0,1.0,2.0,
+STU1008,,15.0,9,,2.7,3.0,Low,,1.0,3.0,3.5,3.0
+STU1009,Liam Martinez,,11,0.76,3.1,5.0,HIGH,middle income,,,1.0,4.0
+STU1010,Olivia Rodriguez,17.0,12,0.89,,2.0,Medium,High Income,0.0,2.0,,5.0
+STU1011,Noah Hernandez,16.0,10,0.95,3.7,1.0,low,Low Income,1.0,3.0,2.5,3.0
+STU1012,Ava Lopez,15.0,9,0.82,3.3,2.0,High,Middle Income,2.0,1.0,3.0,4.0
+STU1013,William Gonzalez,14.0,9,0.87,2.8,,Medium,,0.0,2.0,,
+STU1014,Isabella Moore,16.0,10,,3.5,3.0,,low income,,,2.0,5.0
+STU1015,James Anderson,17.0,11,0.79,,4.0,low,High Income,3.0,1.0,1.5,4.0
+STU1016,,15.0,9,0.93,3.4,1.0,high,Middle Income,1.0,3.0,3.5,3.0
+STU1017,Charlotte Thomas,,10,0.84,3.2,2.0,Medium,LOW INCOME,0.0,2.0,,
+STU1018,Benjamin Taylor,16.0,10,0.88,3.8,2.0,Low,,2.0,4.0,2.5,5.0
+STU1019,Amelia White,17.0,11,-0.1,5.0,15.0,MEDIUM,High Income,20.0,,3.0,4.0
+STU1020,Lucas Harris,14.0,9,0.9,3.6,1.0,High,Middle Income,1.0,1.0,2.0,3.0
+STU1021,John Smith,15.0,9,0.86,3.1,3.0,low,Low Income,,2.0,,
+STU1022,mary johnson,16.0,10,,2.9,2.0,,,2.0,3.0,1.5,4.0
+STU1023,  Sarah Davis  ,18.0,12,0.81,,,Medium,MIDDLE INCOME,0.0,,3.0,5.0
+STU1024,MIKE WILSON,17.0,11,0.94,3.7,1.0,high,High Income,1.0,2.0,2.5,3.0
+STU1025,Emma Brown,16.0,10,0.83,3.4,2.0,Low,Low Income,2.0,1.0,,4.0
+STU1026,James Lee,15.0,9,0.87,3.5,3.0,medium,middle income,,3.0,4.0,
+STU1027,sophia garcia,14.0,9,0.91,2.8,2.0,High,,1.0,,2.0,5.0
+STU1028,,,10,0.85,3.2,4.0,LOW,High Income,0.0,2.0,3.0,3.0
+STU1029,Liam Martinez,16.0,10,,3.9,1.0,Medium,Low Income,2.0,1.0,,4.0
+STU1030,Olivia Rodriguez,17.0,11,0.92,,2.0,,Middle Income,1.0,3.0,1.5,5.0
+STU1031,Noah Hernandez,15.0,9,0.88,3.6,,High,low income,0.0,2.0,2.5,3.0
+STU1032,Ava Lopez,16.0,10,0.86,3.3,3.0,low,,,,3.0,
+STU1033,William Gonzalez,17.0,11,,3.1,2.0,Medium,High Income,2.0,3.0,,4.0
+STU1034,Isabella Moore,14.0,9,0.89,,1.0,HIGH,Middle Income,1.0,1.0,2.0,5.0
+STU1035,James Anderson,15.0,9,0.93,3.8,2.0,,Low Income,0.0,2.0,3.5,3.0
+STU1036,,16.0,10,0.84,3.5,3.0,Low,HIGH INCOME,1.0,4.0,,4.0
+STU1037,Charlotte Thomas,,11,0.87,2.9,,medium,,,,1.5,
+STU1038,Benjamin Taylor,18.0,12,0.9,3.7,2.0,High,Middle Income,2.0,1.0,3.0,5.0
+STU1039,Amelia White,17.0,11,0.85,3.4,3.0,low,Low Income,1.0,2.0,2.5,4.0
+STU1040,Lucas Harris,16.0,10,,3.2,4.0,Medium,high income,0.0,3.0,4.0,3.0
+STU1041,John Smith,15.0,9,0.91,,2.0,High,,1.0,,,4.0
+STU1042,mary johnson,14.0,9,0.86,3.6,1.0,,Middle Income,2.0,2.0,2.0,
+STU1043,  Sarah Davis  ,16.0,10,0.88,3.3,,low,Low Income,,1.0,3.0,5.0
+STU1044,MIKE WILSON,17.0,11,,3.8,2.0,Medium,HIGH INCOME,0.0,3.0,2.5,3.0
+STU1045,Emma Brown,15.0,9,0.84,3.5,3.0,HIGH,,1.0,2.0,,4.0
+STU1046,James Lee,,10,0.92,,2.0,Low,Middle Income,2.0,,1.5,5.0
+STU1047,sophia garcia,16.0,10,0.87,3.4,1.0,medium,low income,,3.0,3.5,
+STU1048,,17.0,11,0.89,3.7,,,High Income,1.0,1.0,2.0,3.0
+STU1049,Liam Martinez,14.0,9,0.85,3.1,3.0,High,Low Income,0.0,2.0,,4.0
+STU1050,Olivia Rodriguez,15.0,9,0.9,3.9,2.0,Low,MIDDLE INCOME,2.0,4.0,3.0,5.0
+STU1001,John Smith,15.0,9,0.85,3.5,2.0,Low,Low Income,0.0,2.0,2.5,4.0
+STU1002,mary johnson,16.0,10,0.92,3.8,1.0,High,Middle Income,1.0,3.0,,5.0
+STU1003,  Sarah Davis  ,,11,,2.9,3.0,medium,,2.0,1.0,3.0,3.0

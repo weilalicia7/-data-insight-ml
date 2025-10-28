@@ -18,50 +18,81 @@ Data Insight ML is a ready-to-use machine learning system that allows organizati
 
 ## Quick Start (5 minutes)
 
-### 1. Install Dependencies
+### Option 1: Try Pre-Trained Models (Fastest - 2 minutes)
 
-```bash
-pip install -r requirements.txt
-```
+**Perfect for exploring the toolkit with ready-to-use ML models!**
 
-### 2. Prepare Your Data
+1. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Place your CSV file in the `data_insight_ml` folder and run:
+2. **Start the API Server**
+   ```bash
+   python app.py
+   ```
+   The server will start at http://localhost:5000 with 6 pre-trained models.
 
-```bash
-python prepare_data.py your_data.csv
-```
+3. **Open the Web Interface**
+   - Open `demo.html` in your web browser
+   - Select a domain (Donor Retention, Student Dropout, etc.)
+   - Try uploading `messy_student_data.csv` to see data cleaning in action
+   - Or use the demo data for instant predictions!
 
-This will analyze your data and prepare it for training.
+### Option 2: Train Your Own Model
 
-### 3. Train Your Model
+1. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python train_model.py
-```
+2. **Prepare Your Data**
+   Place your CSV file in the `data_insight_ml` folder and run:
+   ```bash
+   python prepare_data.py your_data.csv
+   ```
 
-This trains a machine learning model on your data (takes 2-5 minutes).
+3. **Train Your Model**
+   ```bash
+   python train_model.py
+   ```
+   This trains a machine learning model on your data (takes 2-5 minutes).
 
-### 4. Start the Prediction API
+4. **Start the Prediction API**
+   ```bash
+   python app.py
+   ```
 
-```bash
-python app.py
-```
-
-Your API is now running at http://localhost:5000
-
-### 5. Use the Web Interface
-
-Open `demo.html` in your web browser to interact with your model!
+5. **Use the Web Interface**
+   Open `demo.html` in your web browser to interact with your model!
 
 ## Features
 
+### 🎯 Multi-Domain Pre-Trained Models
+- **6 Ready-to-Use Models**: Donor Retention, Student Dropout, Program Completion, Grant Scoring, Customer Churn, Child Wellbeing
+- **Instant Predictions**: No training required - start making predictions immediately
+- **Domain-Specific**: Each model optimized for its specific use case
+
+### 🧹 Interactive Data Cleaning
+- **Automatic Analysis**: Detects missing values, duplicates, outliers, and data quality issues
+- **Smart Suggestions**: AI-powered cleaning recommendations
+- **Template Commands**: Use structured commands to clean data exactly how you want
+  ```
+  FILTER: age >= 18
+  FILL: income WITH median
+  REPLACE: gender M WITH Male
+  CLIP: age 0 120
+  ```
+- **Visual Feedback**: See data quality scores and cleaning results in real-time
+- **Export Cleaned Data**: Download cleaned CSV and prediction reports
+
+### 🤖 Core ML Features
 - **Auto-detection**: Automatically detects data types (numeric, categorical, dates)
 - **Feature Engineering**: Creates useful features from your data
 - **Multiple Algorithms**: Random Forest, Logistic Regression, XGBoost
 - **Model Evaluation**: Cross-validation, accuracy metrics, feature importance
 - **REST API**: Easy-to-use API for predictions
-- **Web Interface**: User-friendly demo page
+- **Web Interface**: User-friendly demo page with charts and visualizations
 - **Free Forever**: Open source, no costs, no limitations
 
 ## Data Requirements
@@ -85,17 +116,69 @@ applicant_id,age,income,education,region,credit_score,approved
 
 ```
 data_insight_ml/
-├── README.md              # This file
-├── requirements.txt       # Python dependencies
-├── prepare_data.py        # Data preparation script
-├── train_model.py         # Model training script
-├── app.py                 # Flask API server
-├── demo.html              # Web interface
-├── quick_test.py          # Test your setup
-├── config.yaml            # Configuration (optional)
-├── models/                # Trained models saved here
-└── data/                  # Your data files go here
+├── README.md                          # This file
+├── requirements.txt                   # Python dependencies
+├── app.py                             # Flask API server
+├── demo.html                          # Web interface
+├── domain_manager.py                  # Multi-domain model manager
+├── example_cleaning_commands.txt      # Template command examples
+│
+├── Demo Data Files (Try these!)
+├── messy_student_data.csv             # Example messy data for cleaning
+├── demo_upload_student_dropout.csv    # Student dropout demo
+├── demo_upload_donor_retention.csv    # Donor retention demo
+├── demo_upload_program_completion.csv # Program completion demo
+├── demo_upload_grant_scoring.csv      # Grant scoring demo
+├── demo_upload_customer_churn.csv     # Customer churn demo
+└── demo_upload_child_wellbeing.csv    # Child wellbeing demo
+│
+├── Model Training (Optional)
+├── prepare_data.py                    # Data preparation script
+├── train_model.py                     # Model training script
+├── setup_domains.py                   # Create pre-trained domains
+├── quick_test.py                      # Test your setup
+├── config.yaml                        # Configuration
+│
+└── Directories
+    ├── domains/                       # Pre-trained domain models
+    ├── models/                        # Your custom trained models
+    └── temp/                          # Temporary files during processing
 ```
+
+## Interactive Data Cleaning with Template Commands
+
+The web interface includes powerful template commands for precise data cleaning:
+
+### Available Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `FILTER: condition` | Keep only rows matching condition | `FILTER: age >= 18` |
+| `FILL: column WITH value` | Fill missing values | `FILL: income WITH median` |
+| `DROP: column` | Remove a column | `DROP: temp_column` |
+| `REPLACE: column old WITH new` | Replace values | `REPLACE: gender M WITH Male` |
+| `RENAME: old TO new` | Rename column | `RENAME: old_id TO new_id` |
+| `CLIP: column min max` | Constrain values to range | `CLIP: age 0 120` |
+| `# comment` | Add comments | `# Fix data quality issues` |
+
+### Example Usage
+
+See `example_cleaning_commands.txt` for complete examples. Here's a quick sample:
+
+```
+# Clean student data
+FILTER: age >= 14
+FILL: gpa WITH mean
+FILL: attendance_rate WITH median
+REPLACE: parent_involvement low WITH Low
+CLIP: gpa 0 4.0
+```
+
+Commands are executed top-to-bottom. The cleaning log shows exactly what was done with color-coded feedback:
+- ✓ Green = Success
+- ⚠ Orange = Warning (column not found)
+- ❌ Red = Error
+- 📝 Blue = Note/comment
 
 ## Configuration (Optional)
 

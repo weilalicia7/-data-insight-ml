@@ -1,0 +1,16 @@
+participant_id,participant_name,age,education,income_level,attendance_rate,engagement_score,mentor_assigned,hours_per_week
+PRT2001,Mason Garcia,22.0,High School,Low,0.87,9.5,0,7.5
+PRT2002,Ava Taylor,27.0,Master,High,0.84,10.0,0,19.8
+PRT2003,Liam Wilson,38.0,High School,Medium,0.93,8.4,0,21.3
+PRT2004,Harper Moore,23.0,High School,Low,0.69,7.6,1,13.9
+PRT2005,Emma Brown,26.0,High School,Low,0.87,8.7,0,13.7
+PRT2006,Evelyn Hernandez,37.0,Master,Medium,0.95,4.5,1,15.1
+PRT2007,Sophia Brown,37.0,Master,High,0.79,6.4,0,17.4
+PRT2008,Mason Wilson,34.0,Bachelor,High,0.98,8.5,0,5.2
+PRT2009,Lucas Jackson,18.0,Bachelor,High,0.86,3.7,1,12.2
+PRT2010,James Johnson,40.0,Bachelor,Low,0.85,7.1,1,9.2
+PRT2011,James Martinez,27.0,PhD,Medium,0.78,9.8,1,14.9
+PRT2012,Benjamin Taylor,25.0,PhD,Medium,0.93,6.9,1,16.7
+PRT2013,Lucas Martinez,32.0,Bachelor,Low,0.97,3.8,1,13.2
+PRT2014,Evelyn Garcia,40.0,High School,Medium,0.91,10.0,0,19.3
+PRT2015,Evelyn Hernandez,30.0,PhD,Medium,0.99,9.4,1,13.8

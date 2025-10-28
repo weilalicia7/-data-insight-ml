@@ -1,0 +1,99 @@
+# Example Data Cleaning Commands for Data Insight ML
+# Use these template commands in the "Additional Cleaning Commands" box
+
+# ==============================================================================
+# EXAMPLE COMMANDS FOR STUDENT DROPOUT DATASET (messy_student_data.csv)
+# ==============================================================================
+
+# Keep only valid student ages
+FILTER: age >= 14
+FILTER: age <= 19
+
+# Fill missing numerical values
+FILL: age WITH median
+FILL: gpa WITH mean
+FILL: attendance_rate WITH median
+FILL: tutoring_hours WITH 0
+FILL: behavioral_incidents WITH 0
+
+# Fill missing categorical values
+FILL: student_name WITH Unknown Student
+FILL: parent_involvement WITH Medium
+FILL: economic_status WITH Middle Income
+
+# Standardize parent_involvement values (fix capitalization)
+REPLACE: parent_involvement low WITH Low
+REPLACE: parent_involvement LOW WITH Low
+REPLACE: parent_involvement medium WITH Medium
+REPLACE: parent_involvement high WITH High
+REPLACE: parent_involvement HIGH WITH High
+
+# Standardize economic_status values (fix capitalization)
+REPLACE: economic_status low income WITH Low Income
+REPLACE: economic_status middle income WITH Middle Income
+REPLACE: economic_status high income WITH High Income
+REPLACE: economic_status HIGH INCOME WITH High Income
+
+# Ensure valid ranges
+CLIP: attendance_rate 0 1
+CLIP: gpa 0 4.0
+
+# ==============================================================================
+# COMMAND REFERENCE
+# ==============================================================================
+
+# FILTER: condition
+#   Remove rows that don't match the condition
+#   Examples:
+#     FILTER: age >= 18
+#     FILTER: income > 50000
+#     FILTER: status == "Active"
+
+# FILL: column WITH value
+#   Fill missing values in a column
+#   Special values: median, mean, mode
+#   Examples:
+#     FILL: income WITH 0
+#     FILL: age WITH median
+#     FILL: category WITH mode
+#     FILL: name WITH Unknown
+
+# DROP: column
+#   Remove an entire column
+#   Examples:
+#     DROP: temporary_column
+#     DROP: old_id
+
+# REPLACE: column old_value WITH new_value
+#   Replace specific values in a column
+#   Examples:
+#     REPLACE: gender M WITH Male
+#     REPLACE: status 0 WITH inactive
+#     REPLACE: country USA WITH United States
+
+# RENAME: old_column TO new_column
+#   Rename a column
+#   Examples:
+#     RENAME: old_name TO new_name
+#     RENAME: customerID TO customer_id
+
+# CLIP: column min max
+#   Constrain values to a range (for numeric columns)
+#   Examples:
+#     CLIP: age 0 120
+#     CLIP: gpa 0 4.0
+#     CLIP: temperature -50 50
+
+# Comments
+#   Lines starting with # are ignored
+#   Use them to document your cleaning process
+
+# ==============================================================================
+# TIPS
+# ==============================================================================
+
+# 1. Commands are executed in order from top to bottom
+# 2. Use comments (#) to document your cleaning steps
+# 3. Check column names in your CSV before using commands
+# 4. Use the automatic suggestions for common issues
+# 5. Combine template commands with automatic suggestions for best results

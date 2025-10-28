@@ -1,0 +1,16 @@
+child_id,child_name,age,nutrition_score,health_checkups_per_year,school_attendance_rate,family_income_level,caregiver_education,siblings_count,home_environment_score,access_to_clean_water,vaccination_status,behavioral_issues
+CHD6001,Noah Moore,14.0,6.1,2,0.57,Low,Higher,1,5.2,Yes,Incomplete,None
+CHD6002,Ethan Davis,7.0,7.3,5,0.72,Low,Primary,4,7.8,No,Incomplete,Mild
+CHD6003,Ava Hernandez,8.0,8.2,0,0.58,Very Low,Primary,3,4.9,No,Complete,Mild
+CHD6004,Ethan Anderson,8.0,5.2,1,0.81,Medium,Secondary,0,6.5,No,Complete,Moderate
+CHD6005,Emma Hernandez,13.0,4.7,0,0.83,Medium,Higher,0,1.0,No,Incomplete,None
+CHD6006,Amelia Wilson,3.0,7.6,1,0.63,High,Higher,3,5.4,Yes,Incomplete,None
+CHD6007,William Miller,9.0,1.9,1,0.67,Very Low,Primary,3,5.1,Yes,Complete,Mild
+CHD6008,Mia Martinez,10.0,5.4,3,0.82,Low,Primary,1,7.2,Yes,Incomplete,Moderate
+CHD6009,Charlotte Davis,8.0,3.9,6,0.85,Very Low,None,4,5.5,Yes,Incomplete,Severe
+CHD6010,Alexander Williams,6.0,7.0,1,0.51,High,Higher,0,6.4,No,Incomplete,None
+CHD6011,James Williams,10.0,8.3,1,0.89,High,Primary,2,7.6,No,Incomplete,None
+CHD6012,Lucas Moore,8.0,8.5,0,0.89,Medium,Primary,1,7.1,No,Incomplete,None
+CHD6013,Olivia Wilson,10.0,6.4,2,0.57,High,None,1,6.7,Yes,Incomplete,Mild
+CHD6014,Henry Brown,5.0,1.9,3,0.8,High,Primary,2,8.1,Yes,Complete,Mild
+CHD6015,Noah Miller,10.0,6.4,0,0.69,High,Secondary,1,7.2,No,Complete,Moderate

@@ -1,0 +1,16 @@
+donor_id,donor_name,last_donation_amount,donation_frequency,years_since_first,email_opens,age,region
+DNR1001,Isabella Brown,40.96,5,0.7,5,30.0,East
+DNR1002,Mason Thomas,19.29,3,2.4,7,57.0,North
+DNR1003,Harper Hernandez,46.65,5,3.9,3,49.0,North
+DNR1004,Olivia Williams,0.57,2,2.0,12,50.0,South
+DNR1005,Olivia Anderson,29.09,1,8.1,9,18.0,South
+DNR1006,Olivia Moore,158.8,4,7.5,11,53.0,East
+DNR1007,Harper Thomas,1.54,5,0.4,7,29.0,West
+DNR1008,Ava Lopez,91.34,2,0.0,11,49.0,East
+DNR1009,Harper Martinez,92.58,5,0.4,14,34.0,East
+DNR1010,Olivia Gonzalez,11.11,2,5.1,8,56.0,East
+DNR1011,Ava Johnson,48.12,5,6.1,9,49.0,North
+DNR1012,Benjamin Martin,3.72,3,0.5,9,50.0,East
+DNR1013,Ava Jones,221.1,1,0.9,3,29.0,North
+DNR1014,Noah Davis,395.92,3,1.6,6,49.0,South
+DNR1015,Henry Thomas,6.18,4,0.6,14,60.0,South

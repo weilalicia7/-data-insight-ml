@@ -470,8 +470,27 @@
                         <h4>Cleaning Suggestions</h4>
                         <div id="suggestionsList" style="margin: 20px 0;"></div>
 
-                        <label for="customNotes" style="display: block; margin: 15px 0 5px;">Additional Notes (Optional):</label>
-                        <textarea id="customNotes" placeholder="Enter any specific cleaning instructions..." style="width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #E0E0E0; min-height: 60px; font-family: inherit;"></textarea>
+                        <label for="customNotes" style="display: block; margin: 15px 0 5px;">
+                            Additional Cleaning Commands (Optional):
+                            <span style="font-size: 0.85em; color: #B2BAC2; font-weight: normal; margin-left: 8px;">
+                                Use template commands (one per line)
+                            </span>
+                        </label>
+                        <textarea id="customNotes" placeholder="Examples:&#10;FILTER: age < 100&#10;FILL: income WITH 0&#10;FILL: name WITH median&#10;DROP: temp_column&#10;REPLACE: gender M WITH Male&#10;RENAME: old_name TO new_name&#10;CLIP: age 0 120&#10;# Comments start with #" style="width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #E0E0E0; min-height: 100px; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;"></textarea>
+
+                        <!-- Command Help -->
+                        <details style="margin-top: 10px; padding: 10px; background: rgba(0, 212, 255, 0.05); border-radius: 6px; border-left: 3px solid #00D4FF;">
+                            <summary style="cursor: pointer; color: #00D4FF; font-weight: 500; font-size: 0.9em;">📖 Command Reference</summary>
+                            <div style="margin-top: 10px; color: #B2BAC2; font-size: 0.85em; line-height: 1.8;">
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">FILTER: condition</code> - Remove rows (e.g., <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">FILTER: age >= 18</code>)</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">FILL: column WITH value</code> - Fill missing values (supports: median, mean, mode, or specific value)</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">DROP: column</code> - Remove a column</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">REPLACE: column old WITH new</code> - Replace values</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">RENAME: old TO new</code> - Rename column</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">CLIP: column min max</code> - Clip values to range</div>
+                                <div style="margin: 8px 0;"><code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;"># comment</code> - Add comments (ignored)</div>
+                            </div>
+                        </details>
 
                         <button class="btn" id="approveBtn" style="margin-top: 15px;">Apply Cleaning & Predict</button>
                     </div>
@@ -1318,9 +1337,25 @@
                     if (data.cleaning_log && data.cleaning_log.length > 0) {
                         const logDiv = document.getElementById('cleaningLog');
                         const contentDiv = document.getElementById('cleaningLogContent');
-                        contentDiv.innerHTML = data.cleaning_log.map(item =>
-                            `<div style="padding: 5px 0; color: #B2BAC2; font-size: 0.9em;"><span style="color: #4CAF50; margin-right: 8px;">✓</span>${item}</div>`
-                        ).join('');
+                        contentDiv.innerHTML = data.cleaning_log.map(item => {
+                            // Color-code different types of log messages
+                            if (item.startsWith('✓')) {
+                                // Success messages (green)
+                                return `<div style="padding: 5px 0; color: #B2BAC2; font-size: 0.9em;"><span style="color: #4CAF50; margin-right: 8px;">${item.substring(0, 1)}</span>${item.substring(2)}</div>`;
+                            } else if (item.startsWith('⚠')) {
+                                // Warning messages (orange)
+                                return `<div style="padding: 5px 0; color: #FFA726; font-size: 0.9em;"><span style="margin-right: 8px;">${item.substring(0, 1)}</span>${item.substring(2)}</div>`;
+                            } else if (item.startsWith('❌')) {
+                                // Error messages (red)
+                                return `<div style="padding: 8px; margin: 5px 0; color: #EF5350; font-size: 0.9em; background: rgba(239, 83, 80, 0.1); border-radius: 4px; border-left: 3px solid #EF5350;"><span style="margin-right: 8px;">${item.substring(0, 1)}</span>${item.substring(2)}</div>`;
+                            } else if (item.startsWith('📝')) {
+                                // Note messages (blue)
+                                return `<div style="padding: 8px; margin: 5px 0; color: #00D4FF; font-size: 0.9em; background: rgba(0, 212, 255, 0.1); border-radius: 4px; border-left: 3px solid #00D4FF;"><span style="margin-right: 8px;">${item.substring(0, 1)}</span>${item.substring(2)}</div>`;
+                            } else {
+                                // Default messages
+                                return `<div style="padding: 5px 0; color: #B2BAC2; font-size: 0.9em;"><span style="color: #4CAF50; margin-right: 8px;">✓</span>${item}</div>`;
+                            }
+                        }).join('');
                         logDiv.style.display = 'block';
                     }
 

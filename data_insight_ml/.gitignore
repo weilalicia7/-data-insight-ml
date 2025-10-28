@@ -34,6 +34,8 @@ wheels/
 !example_data.csv
 !domains/**/example_data.csv
 !domains/**/metadata.json
+!messy_student_data.csv
+!demo_upload_*.csv
 
 # Model files
 *.pkl
