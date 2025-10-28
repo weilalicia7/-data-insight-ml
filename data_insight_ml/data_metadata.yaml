@@ -1,0 +1,13 @@
+categorical_features:
+- donation_frequency
+- email_opens
+- region
+n_samples: 1000
+numeric_features:
+- last_donation_amount
+- years_since_first
+- age
+- last_donation_amount_x_years_since_first
+preparation_date: '2025-10-28T17:57:20.654702'
+target_column: donated_again
+total_features: 31

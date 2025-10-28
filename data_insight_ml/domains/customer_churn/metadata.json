@@ -1,0 +1,34 @@
+{
+  "domain": "customer_churn",
+  "display_name": "Member Churn Prediction",
+  "description": "Predict which members are at risk of churning",
+  "icon": "\ud83d\udc65",
+  "use_case": "Retain members through proactive engagement",
+  "target_variable": "churned",
+  "target_description": "1 = Churned, 0 = Retained",
+  "features_count": 9,
+  "example_rows": 1000,
+  "model_type": "Random Forest",
+  "accuracy": 0.87,
+  "precision": 0.8705929487179486,
+  "recall": 0.87,
+  "f1_score": 0.8699479791916767,
+  "training_date": "2025-10-28",
+  "recommendations": {
+    "high_confidence_threshold": 0.75,
+    "action_positive": "Standard retention efforts",
+    "action_negative": "Urgent: Offer retention incentive and personal outreach"
+  },
+  "sample_inputs": [
+    {
+      "name": "Engaged member",
+      "description": "Active usage and long tenure",
+      "expected": "Low churn risk"
+    },
+    {
+      "name": "At-risk member",
+      "description": "Declining activity and support tickets",
+      "expected": "High churn risk"
+    }
+  ]
+}

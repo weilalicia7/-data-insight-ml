@@ -1,0 +1,34 @@
+{
+  "domain": "grant_scoring",
+  "display_name": "Grant Application Scoring",
+  "description": "Score and prioritize grant applications automatically",
+  "icon": "\ud83d\udccb",
+  "use_case": "Efficiently evaluate applications and identify top candidates",
+  "target_variable": "approved",
+  "target_description": "1 = Approved, 0 = Rejected",
+  "features_count": 9,
+  "example_rows": 500,
+  "model_type": "Random Forest",
+  "accuracy": 0.71,
+  "precision": 0.7393817743877961,
+  "recall": 0.71,
+  "f1_score": 0.7126519947743946,
+  "training_date": "2025-10-28",
+  "recommendations": {
+    "high_confidence_threshold": 0.8,
+    "action_positive": "Fast-track for review board",
+    "action_negative": "Request additional information or decline"
+  },
+  "sample_inputs": [
+    {
+      "name": "Strong application",
+      "description": "Established org with strong proposal",
+      "expected": "Approve (high confidence)"
+    },
+    {
+      "name": "Weak application",
+      "description": "New org with unclear objectives",
+      "expected": "Reject (medium confidence)"
+    }
+  ]
+}

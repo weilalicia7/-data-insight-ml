@@ -1,0 +1,34 @@
+{
+  "domain": "child_wellbeing",
+  "display_name": "Child Wellbeing Risk Assessment",
+  "description": "Identify children who need additional support",
+  "icon": "\ud83e\uddd2",
+  "use_case": "Ensure all children receive necessary care and support",
+  "target_variable": "needs_support",
+  "target_description": "1 = Needs support, 0 = Doing well",
+  "features_count": 17,
+  "example_rows": 500,
+  "model_type": "Random Forest",
+  "accuracy": 0.79,
+  "precision": 0.7910477719791248,
+  "recall": 0.79,
+  "f1_score": 0.7898108297467721,
+  "training_date": "2025-10-28",
+  "recommendations": {
+    "high_confidence_threshold": 0.75,
+    "action_positive": "Continue routine monitoring",
+    "action_negative": "Priority: Provide nutrition support, health services, family counseling"
+  },
+  "sample_inputs": [
+    {
+      "name": "Thriving child",
+      "description": "Good nutrition, health checkups, supportive home",
+      "expected": "Doing well (high confidence)"
+    },
+    {
+      "name": "At-risk child",
+      "description": "Poor nutrition, missed checkups, challenging home environment",
+      "expected": "Needs support (high confidence)"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "domain": "program_completion",
+  "display_name": "Program Completion Prediction",
+  "description": "Predict which program participants will complete successfully",
+  "icon": "\ud83c\udf93",
+  "use_case": "Identify at-risk participants early and provide targeted support",
+  "target_variable": "completed",
+  "target_description": "1 = Completed program, 0 = Did not complete",
+  "features_count": 10,
+  "example_rows": 800,
+  "model_type": "Random Forest",
+  "accuracy": 0.83125,
+  "precision": 0.8338056998897813,
+  "recall": 0.83125,
+  "f1_score": 0.8309263825290595,
+  "training_date": "2025-10-28",
+  "recommendations": {
+    "high_confidence_threshold": 0.75,
+    "action_positive": "Continue current support level",
+    "action_negative": "Assign additional mentor and schedule check-in"
+  },
+  "sample_inputs": [
+    {
+      "name": "High-attendance participant",
+      "description": "Strong engagement and mentor support",
+      "expected": "Will complete (high confidence)"
+    },
+    {
+      "name": "At-risk participant",
+      "description": "Low attendance and engagement",
+      "expected": "At risk of dropout (high confidence)"
+    }
+  ]
+}

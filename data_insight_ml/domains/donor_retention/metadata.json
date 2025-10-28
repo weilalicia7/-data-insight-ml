@@ -1,0 +1,34 @@
+{
+  "domain": "donor_retention",
+  "display_name": "Donor Retention Prediction",
+  "description": "Predict which donors are likely to donate again",
+  "icon": "\ud83d\udcb0",
+  "use_case": "Optimize fundraising by focusing on high-probability donors",
+  "target_variable": "donated_again",
+  "target_description": "1 = Will donate again, 0 = Will not donate",
+  "features_count": 8,
+  "example_rows": 1000,
+  "model_type": "Random Forest",
+  "accuracy": 0.745,
+  "precision": 0.7452206986287659,
+  "recall": 0.745,
+  "f1_score": 0.7449426120877197,
+  "training_date": "2025-10-28",
+  "recommendations": {
+    "high_confidence_threshold": 0.8,
+    "action_positive": "Prioritize for next fundraising campaign",
+    "action_negative": "Initiate re-engagement campaign with personalized outreach"
+  },
+  "sample_inputs": [
+    {
+      "name": "High-value engaged donor",
+      "description": "Regular donor with high engagement",
+      "expected": "Will donate (high confidence)"
+    },
+    {
+      "name": "At-risk donor",
+      "description": "Infrequent donor with low engagement",
+      "expected": "Will not donate (high confidence)"
+    }
+  ]
+}

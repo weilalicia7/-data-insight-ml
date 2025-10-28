@@ -1,0 +1,7 @@
+cv_mean: 0.715
+model_name: Logistic Regression
+n_features: 31
+test_accuracy: 0.77
+test_f1: 0.7697928135321789
+train_accuracy: 0.74125
+training_date: '2025-10-28T18:02:07.216744'

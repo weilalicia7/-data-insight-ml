@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Insight ML - Multi-Domain Analytics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0A1929;
+            color: #E7EBF0;
+            min-height: 100vh;
+        }
+
+        .nav-bar {
+            background: rgba(10, 25, 41, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            font-weight: 300;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B2BAC2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #B2BAC2;
+        }
+
+        /* Domain Selection */
+        .domain-selector {
+            margin: 40px 0;
+        }
+
+        .domain-selector h2 {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            color: #00D4FF;
+            text-align: center;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .domain-card {
+            background: linear-gradient(135deg, rgba(0, 30, 60, 0.5) 0%, rgba(10, 25, 41, 0.8) 100%);
+            border: 2px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .domain-card:hover {
+            border-color: rgba(0, 212, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .domain-card.active {
+            border-color: #00D4FF;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(10, 25, 41, 0.9) 100%);
+        }
+
+        .domain-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #00D4FF;
+        }
+
+        .domain-card p {
+            color: #B2BAC2;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .domain-card .accuracy {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #00FF88;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 30, 60, 0.3) 0%, rgba(10, 25, 41, 0.6) 100%);
+            border: 2px dashed rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .upload-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #00D4FF;
+        }
+
+        .upload-zone {
+            padding: 60px 20px;
+            border: 3px dashed rgba(0, 212, 255, 0.4);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: #00D4FF;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .upload-zone p {
+            font-size: 1.2em;
+            color: #B2BAC2;
+            margin-bottom: 15px;
+        }
+
+        .upload-zone .file-name {
+            color: #00D4FF;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        /* Manual Input */
+        .manual-input {
+            margin: 40px 0;
+        }
+
+        .manual-input h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #00D4FF;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #B2BAC2;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px 15px;
+            background: rgba(0, 30, 60, 0.5);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 6px;
+            color: #E7EBF0;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #00D4FF;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+            color: #0A1929;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid #00D4FF;
+            color: #00D4FF;
+        }
+
+        /* Results */
+        .results {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 30, 60, 0.5) 0%, rgba(10, 25, 41, 0.8) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #00D4FF;
+        }
+
+        .result-item {
+            padding: 20px;
+            background: rgba(0, 30, 60, 0.3);
+            border-left: 4px solid #00D4FF;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .result-item h4 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #E7EBF0;
+        }
+
+        .result-item p {
+            color: #B2BAC2;
+            line-height: 1.6;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00D4FF, #00FF88);
+            transition: width 0.6s ease;
+        }
+
+        .error {
+            padding: 20px;
+            background: rgba(255, 50, 50, 0.1);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            border-radius: 8px;
+            color: #FF5252;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 212, 255, 0.2);
+            border-top: 3px solid #00D4FF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .spinner.show {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .tab-button {
+            padding: 12px 30px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #00D4FF;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #00D4FF 0%, #00B8D4 100%);
+            color: #0A1929;
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <div class="logo">Data Insight ML</div>
+            <div class="nav-status">
+                <span id="apiStatus">Connecting...</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Multi-Domain ML Analytics</h1>
+            <p>Choose your use case, upload data or try demo predictions instantly</p>
+        </div>
+
+        <!-- Domain Selection -->
+        <div class="domain-selector">
+            <h2>Select Your Use Case</h2>
+            <div class="domain-grid">
+                <div class="domain-card" data-domain="donor_retention">
+                    <h3>Donor Retention</h3>
+                    <p>Predict which donors are likely to donate again and optimize fundraising campaigns</p>
+                    <div class="accuracy">Accuracy: 74.5%</div>
+                </div>
+                <div class="domain-card" data-domain="program_completion">
+                    <h3>Program Completion</h3>
+                    <p>Identify participants at risk of dropout and provide targeted support</p>
+                    <div class="accuracy">Accuracy: 83.1%</div>
+                </div>
+                <div class="domain-card" data-domain="grant_scoring">
+                    <h3>Grant Application Scoring</h3>
+                    <p>Automatically score and prioritize grant applications</p>
+                    <div class="accuracy">Accuracy: 71.0%</div>
+                </div>
+                <div class="domain-card" data-domain="customer_churn">
+                    <h3>Member Churn Prediction</h3>
+                    <p>Predict which members are at risk of churning and retain them proactively</p>
+                    <div class="accuracy">Accuracy: 87.0%</div>
+                </div>
+                <div class="domain-card" data-domain="student_dropout">
+                    <h3>Student Dropout Risk</h3>
+                    <p>Identify students at risk of dropping out and provide early intervention</p>
+                    <div class="accuracy">Accuracy: 80.0%</div>
+                </div>
+                <div class="domain-card" data-domain="child_wellbeing">
+                    <h3>Child Wellbeing Risk</h3>
+                    <p>Assess child wellbeing and identify those needing additional support</p>
+                    <div class="accuracy">Accuracy: 79.0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="selectedDomainContent" style="display: none;">
+            <!-- Tab Buttons -->
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="upload">CSV Upload</button>
+                <button class="tab-button" data-tab="manual">Manual Input</button>
+                <button class="tab-button" data-tab="demo">Try Demo Data</button>
+            </div>
+
+            <!-- CSV Upload Tab -->
+            <div class="tab-content active" id="uploadTab">
+                <div class="upload-section">
+                    <h3>Upload Your Data</h3>
+                    <div class="upload-zone" id="dropZone">
+                        <p>Drag & Drop your CSV file here</p>
+                        <p style="font-size: 0.9em; color: #666;">or click to browse</p>
+                        <div class="file-name" id="fileName"></div>
+                        <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                    </div>
+                    <button class="btn" id="uploadBtn" style="margin-top: 20px; display: none;">Upload and Predict</button>
+
+                    <!-- Interactive Cleaning Toggle -->
+                    <div style="margin: 20px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; display: none;" id="cleaningToggleContainer">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="cleaningToggle" style="margin-right: 10px; width: 18px; height: 18px;">
+                            <span>Enable Interactive Data Cleaning (Analyze & Suggest Fixes)</span>
+                        </label>
+                    </div>
+
+                    <!-- Analysis Panel -->
+                    <div id="analysisPanel" style="display: none; margin: 20px 0; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                        <h3>Data Quality Analysis</h3>
+                        <div id="analysisSummary" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0;"></div>
+
+                        <!-- Data Quality Visualizations -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+                            <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 8px;">
+                                <h4 style="text-align: center; margin-bottom: 15px; color: #42A5F5;">Data Quality Score</h4>
+                                <canvas id="qualityGaugeChart" style="max-height: 250px;"></canvas>
+                            </div>
+                            <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 8px;">
+                                <h4 style="text-align: center; margin-bottom: 15px; color: #42A5F5;">Issues Breakdown</h4>
+                                <canvas id="issuesChart" style="max-height: 250px;"></canvas>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <h4 style="text-align: center; margin-bottom: 15px; color: #42A5F5;">Missing Values by Column</h4>
+                            <canvas id="missingValuesChart" style="max-height: 300px;"></canvas>
+                        </div>
+
+                        <h4>Cleaning Suggestions</h4>
+                        <div id="suggestionsList" style="margin: 20px 0;"></div>
+
+                        <label for="customNotes" style="display: block; margin: 15px 0 5px;">Additional Notes (Optional):</label>
+                        <textarea id="customNotes" placeholder="Enter any specific cleaning instructions..." style="width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #E0E0E0; min-height: 60px; font-family: inherit;"></textarea>
+
+                        <button class="btn" id="approveBtn" style="margin-top: 15px;">Apply Cleaning & Predict</button>
+                    </div>
+
+                    <!-- Cleaning Log -->
+                    <div id="cleaningLog" style="display: none; margin: 20px 0; padding: 15px; background: rgba(76, 175, 80, 0.1); border-radius: 6px; border-left: 3px solid #4CAF50;">
+                        <h4>Cleaning Applied:</h4>
+                        <div id="cleaningLogContent"></div>
+                    </div>
+
+                    <!-- Download Buttons -->
+                    <div id="downloadSection" style="display: none; gap: 10px; margin: 20px 0; flex-wrap: wrap;">
+                        <button id="downloadCleanedBtn" disabled style="flex: 1; min-width: 200px; padding: 12px 20px; background: #42A5F5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em;">Download Cleaned CSV</button>
+                        <button id="downloadReportBtn" disabled style="flex: 1; min-width: 200px; padding: 12px 20px; background: #42A5F5; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95em;">Download Prediction Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Input Tab -->
+            <div class="tab-content" id="manualTab">
+                <div class="manual-input">
+                    <h3>Enter Data Manually</h3>
+                    <div id="manualForm"></div>
+                    <button class="btn" id="predictBtn">Run Prediction</button>
+                </div>
+            </div>
+
+            <!-- Demo Data Tab -->
+            <div class="tab-content" id="demoTab">
+                <div class="manual-input">
+                    <h3>Demo Predictions</h3>
+                    <p style="color: #B2BAC2; margin-bottom: 20px;">Try sample predictions with pre-filled data</p>
+                    <button class="btn" id="demoBtn">Run Demo Prediction</button>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="spinner" id="spinner"></div>
+
+            <!-- Results -->
+            <div class="results" id="results"></div>
+
+            <!-- Prediction Visualizations -->
+            <div id="predictionCharts" style="display: none; margin: 30px 0;">
+                <h3 style="text-align: center; margin-bottom: 30px; color: #42A5F5;">Prediction Analytics</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                        <h4 style="text-align: center; margin-bottom: 15px; color: #66BB6A;">Prediction Distribution</h4>
+                        <canvas id="predictionDistChart" style="max-height: 300px;"></canvas>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px;">
+                        <h4 style="text-align: center; margin-bottom: 15px; color: #66BB6A;">Confidence Distribution</h4>
+                        <canvas id="confidenceDistChart" style="max-height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        let currentDomain = null;
+        let uploadedFile = null;
+        let analysisData = null;
+        let cleaningResults = null;
+        let cleanedFilename = null;
+
+        // Check API status
+        async function checkAPI() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                document.getElementById('apiStatus').textContent = 'API Connected';
+                document.getElementById('apiStatus').style.color = '#00FF88';
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = 'API Offline';
+                document.getElementById('apiStatus').style.color = '#FF5252';
+            }
+        }
+
+        // Domain selection
+        document.querySelectorAll('.domain-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.domain-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentDomain = this.dataset.domain;
+                document.getElementById('selectedDomainContent').style.display = 'block';
+                loadDomainForm(currentDomain);
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab;
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(tab + 'Tab').classList.add('active');
+            });
+        });
+
+        // Load domain-specific form
+        function loadDomainForm(domain) {
+            const forms = {
+                donor_retention: [
+                    {name: 'last_donation_amount', label: 'Last Donation Amount ($)', type: 'number', placeholder: '100'},
+                    {name: 'donation_frequency', label: 'Donations per Year', type: 'number', placeholder: '5'},
+                    {name: 'years_since_first', label: 'Years as Donor', type: 'number', placeholder: '3'},
+                    {name: 'email_opens', label: 'Email Opens per Month', type: 'number', placeholder: '12'},
+                    {name: 'age', label: 'Age', type: 'number', placeholder: '45'},
+                    {name: 'region', label: 'Region', type: 'select', options: ['North', 'South', 'East', 'West']}
+                ],
+                program_completion: [
+                    {name: 'age', label: 'Age', type: 'number', placeholder: '28'},
+                    {name: 'education', label: 'Education', type: 'select', options: ['High School', 'Bachelor', 'Master', 'PhD']},
+                    {name: 'income_level', label: 'Income Level', type: 'select', options: ['Low', 'Medium', 'High']},
+                    {name: 'attendance_rate', label: 'Attendance Rate (0-1)', type: 'number', placeholder: '0.85', step: '0.01'},
+                    {name: 'engagement_score', label: 'Engagement Score (1-10)', type: 'number', placeholder: '7'},
+                    {name: 'mentor_assigned', label: 'Has Mentor?', type: 'select', options: ['No', 'Yes']},
+                    {name: 'hours_per_week', label: 'Hours per Week', type: 'number', placeholder: '15'}
+                ],
+                grant_scoring: [
+                    {name: 'org_size', label: 'Organization Size', type: 'select', options: ['Small', 'Medium', 'Large']},
+                    {name: 'years_operating', label: 'Years Operating', type: 'number', placeholder: '5'},
+                    {name: 'budget', label: 'Annual Budget ($)', type: 'number', placeholder: '100000'},
+                    {name: 'previous_grants', label: 'Previous Grants Received', type: 'number', placeholder: '2'},
+                    {name: 'mission_alignment', label: 'Mission Alignment', type: 'select', options: ['Low', 'Medium', 'High']},
+                    {name: 'proposal_quality', label: 'Proposal Quality (1-10)', type: 'number', placeholder: '8'},
+                    {name: 'staff_size', label: 'Staff Size', type: 'number', placeholder: '10'}
+                ],
+                customer_churn: [
+                    {name: 'months_member', label: 'Months as Member', type: 'number', placeholder: '18'},
+                    {name: 'monthly_spending', label: 'Monthly Spending ($)', type: 'number', placeholder: '75'},
+                    {name: 'support_tickets', label: 'Support Tickets', type: 'number', placeholder: '1'},
+                    {name: 'feature_usage_count', label: 'Features Used', type: 'number', placeholder: '10'},
+                    {name: 'referrals_made', label: 'Referrals Made', type: 'number', placeholder: '3'},
+                    {name: 'account_type', label: 'Account Type', type: 'select', options: ['Basic', 'Premium', 'Enterprise']},
+                    {name: 'payment_method', label: 'Payment Method', type: 'select', options: ['Card', 'Bank', 'PayPal']}
+                ],
+                student_dropout: [
+                    {name: 'age', label: 'Student Age', type: 'number', placeholder: '16'},
+                    {name: 'grade_level', label: 'Grade Level', type: 'select', options: ['6', '7', '8', '9', '10', '11', '12']},
+                    {name: 'attendance_rate', label: 'Attendance Rate (0-1)', type: 'number', placeholder: '0.85', step: '0.01'},
+                    {name: 'gpa', label: 'GPA (0-4.0)', type: 'number', placeholder: '2.5', step: '0.1'},
+                    {name: 'absences_per_month', label: 'Absences per Month', type: 'number', placeholder: '3'},
+                    {name: 'parent_involvement', label: 'Parent Involvement', type: 'select', options: ['Low', 'Medium', 'High']},
+                    {name: 'economic_status', label: 'Economic Status', type: 'select', options: ['Low Income', 'Middle Income', 'High Income']},
+                    {name: 'behavioral_incidents', label: 'Behavioral Incidents', type: 'number', placeholder: '1'},
+                    {name: 'extracurricular_activities', label: 'Extracurricular Activities', type: 'number', placeholder: '2'},
+                    {name: 'tutoring_hours', label: 'Tutoring Hours per Week', type: 'number', placeholder: '2', step: '0.5'},
+                    {name: 'family_size', label: 'Family Size', type: 'number', placeholder: '4'}
+                ],
+                child_wellbeing: [
+                    {name: 'age', label: 'Child Age', type: 'number', placeholder: '8'},
+                    {name: 'nutrition_score', label: 'Nutrition Score (1-10)', type: 'number', placeholder: '7'},
+                    {name: 'health_checkups_per_year', label: 'Health Checkups per Year', type: 'number', placeholder: '2'},
+                    {name: 'school_attendance_rate', label: 'School Attendance Rate (0-1)', type: 'number', placeholder: '0.9', step: '0.01'},
+                    {name: 'family_income_level', label: 'Family Income Level', type: 'select', options: ['Very Low', 'Low', 'Medium', 'High']},
+                    {name: 'caregiver_education', label: 'Caregiver Education', type: 'select', options: ['None', 'Primary', 'Secondary', 'Higher']},
+                    {name: 'siblings_count', label: 'Number of Siblings', type: 'number', placeholder: '2'},
+                    {name: 'home_environment_score', label: 'Home Environment Score (1-10)', type: 'number', placeholder: '6'},
+                    {name: 'access_to_clean_water', label: 'Access to Clean Water', type: 'select', options: ['No', 'Yes']},
+                    {name: 'vaccination_status', label: 'Vaccination Status', type: 'select', options: ['Incomplete', 'Complete']},
+                    {name: 'behavioral_issues', label: 'Behavioral Issues', type: 'select', options: ['None', 'Mild', 'Moderate', 'Severe']}
+                ]
+            };
+
+            const formFields = forms[domain] || [];
+            const formHTML = '<div class="form-grid">' + formFields.map(field => {
+                if (field.type === 'select') {
+                    return `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <select id="${field.name}">
+                                ${field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="form-group">
+                            <label>${field.label}</label>
+                            <input type="${field.type}" id="${field.name}" placeholder="${field.placeholder}" ${field.step ? 'step="' + field.step + '"' : ''}>
+                        </div>
+                    `;
+                }
+            }).join('') + '</div>';
+
+            document.getElementById('manualForm').innerHTML = formHTML;
+        }
+
+        // File upload handling
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const uploadBtn = document.getElementById('uploadBtn');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (file.name.endsWith('.csv')) {
+                uploadedFile = file;
+                fileName.textContent = `Selected: ${file.name}`;
+                uploadBtn.style.display = 'inline-block';
+                // Show cleaning toggle
+                document.getElementById('cleaningToggleContainer').style.display = 'block';
+                // Reset cleaning state
+                document.getElementById('cleaningToggle').checked = false;
+                document.getElementById('analysisPanel').style.display = 'none';
+                document.getElementById('cleaningLog').style.display = 'none';
+                document.getElementById('downloadSection').style.display = 'none';
+            } else {
+                alert('Please upload a CSV file');
+            }
+        }
+
+        // Upload and predict
+        uploadBtn.addEventListener('click', async () => {
+            if (!uploadedFile || !currentDomain) return;
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+            formData.append('domain', currentDomain);
+
+            showSpinner();
+
+            try {
+                const response = await fetch(`${API_BASE}/upload-predict`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                hideSpinner();
+
+                if (response.ok) {
+                    displayBatchResults(data);
+                } else {
+                    showError(data.error || 'Upload failed');
+                }
+            } catch (error) {
+                hideSpinner();
+                showError('Error uploading file: ' + error.message);
+            }
+        });
+
+        // Manual prediction
+        document.getElementById('predictBtn').addEventListener('click', async () => {
+            if (!currentDomain) return;
+
+            const formData = {};
+            document.querySelectorAll('#manualForm input, #manualForm select').forEach(input => {
+                formData[input.id] = input.value;
+            });
+
+            showSpinner();
+
+            try {
+                const response = await fetch(`${API_BASE}/domain/${currentDomain}/predict`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                hideSpinner();
+
+                if (response.ok) {
+                    displaySingleResult(data);
+                } else {
+                    showError(data.error || 'Prediction failed');
+                }
+            } catch (error) {
+                hideSpinner();
+                showError('Error making prediction: ' + error.message);
+            }
+        });
+
+        // Demo prediction
+        document.getElementById('demoBtn').addEventListener('click', async () => {
+            if (!currentDomain) return;
+
+            showSpinner();
+
+            try {
+                const response = await fetch(`${API_BASE}/domain/${currentDomain}/demo`);
+                const data = await response.json();
+                hideSpinner();
+
+                if (response.ok) {
+                    displaySingleResult(data);
+                } else {
+                    showError(data.error || 'Demo failed');
+                }
+            } catch (error) {
+                hideSpinner();
+                showError('Error running demo: ' + error.message);
+            }
+        });
+
+        function displaySingleResult(data) {
+            const resultsDiv = document.getElementById('results');
+            const prediction = data.prediction === 1 ? 'Positive' : 'Negative';
+            const confidence = (data.confidence * 100).toFixed(1);
+
+            resultsDiv.innerHTML = `
+                <h3>Prediction Results</h3>
+                <div class="result-item">
+                    <h4>Prediction: ${prediction}</h4>
+                    <p><strong>Confidence:</strong> ${confidence}%</p>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" style="width: ${confidence}%"></div>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Recommendation:</strong> ${data.recommendation}</p>
+                </div>
+            `;
+            resultsDiv.classList.add('show');
+        }
+
+        function displayBatchResults(data) {
+            const resultsDiv = document.getElementById('results');
+            const results = data.results || [];
+
+            let html = '<h3>Batch Prediction Results</h3>';
+            html += `<p style="color: #B2BAC2; margin-bottom: 20px;">Processed ${results.length} records</p>`;
+
+            results.slice(0, 10).forEach((result, i) => {
+                const prediction = result.prediction === 1 ? 'Positive' : 'Negative';
+                const confidence = (result.confidence * 100).toFixed(1);
+
+                // Build identifier string (ID and/or name)
+                let identifierText = `Record ${i + 1}`;
+                if (result.identifiers) {
+                    const ids = result.identifiers;
+                    const parts = [];
+
+                    // Find ID field (donor_id, student_id, etc.)
+                    const idField = Object.keys(ids).find(key => key.toLowerCase().includes('id'));
+                    if (idField && ids[idField]) {
+                        parts.push(ids[idField]);
+                    }
+
+                    // Find name field
+                    const nameField = Object.keys(ids).find(key => key.toLowerCase().includes('name'));
+                    if (nameField && ids[nameField]) {
+                        parts.push(ids[nameField]);
+                    }
+
+                    if (parts.length > 0) {
+                        identifierText = parts.join(' - ');
+                    }
+                }
+
+                html += `
+                    <div class="result-item">
+                        <h4>${identifierText}</h4>
+                        <p><strong>Prediction:</strong> ${prediction}</p>
+                        <p><strong>Confidence:</strong> ${confidence}%</p>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: ${confidence}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (results.length > 10) {
+                html += `<p style="color: #B2BAC2; margin-top: 20px;">Showing first 10 of ${results.length} results</p>`;
+            }
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+
+            // Render prediction charts
+            if (results.length > 0) {
+                renderPredictionCharts(results);
+            }
+        }
+
+        function showSpinner() {
+            document.getElementById('spinner').classList.add('show');
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('predictionCharts').style.display = 'none';
+        }
+
+        function hideSpinner() {
+            document.getElementById('spinner').classList.remove('show');
+        }
+
+        function showError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `<div class="error">${message}</div>`;
+            resultsDiv.classList.add('show');
+        }
+
+        // Interactive Cleaning Toggle
+        document.getElementById('cleaningToggle').addEventListener('change', function() {
+            if (this.checked && uploadedFile && currentDomain) {
+                analyzeUploadedFile();
+            } else {
+                document.getElementById('analysisPanel').style.display = 'none';
+            }
+        });
+
+        // Analyze uploaded file
+        async function analyzeUploadedFile() {
+            if (!uploadedFile || !currentDomain) return;
+
+            showSpinner();
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+            formData.append('domain', currentDomain);
+
+            try {
+                const response = await fetch(`${API_BASE}/analyze-csv`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                hideSpinner();
+
+                if (data.success) {
+                    analysisData = data.analysis;
+                    displayAnalysis(data.analysis);
+                } else {
+                    showError(data.error || 'Analysis failed');
+                }
+            } catch (error) {
+                hideSpinner();
+                showError('Error analyzing file: ' + error.message);
+            }
+        }
+
+        // Chart instances (global to allow destroying before recreating)
+        let qualityGaugeChart = null;
+        let issuesChart = null;
+        let missingValuesChart = null;
+        let predictionDistChart = null;
+        let confidenceDistChart = null;
+
+        // Render data quality visualizations
+        function renderDataQualityCharts(analysis) {
+            // Destroy existing charts
+            if (qualityGaugeChart) qualityGaugeChart.destroy();
+            if (issuesChart) issuesChart.destroy();
+            if (missingValuesChart) missingValuesChart.destroy();
+
+            // 1. Quality Score Gauge (Doughnut)
+            const qualityCtx = document.getElementById('qualityGaugeChart').getContext('2d');
+            const qualityScore = analysis.quality_score;
+            const qualityColor = qualityScore >= 90 ? '#4CAF50' : qualityScore >= 70 ? '#FFA726' : '#EF5350';
+
+            qualityGaugeChart = new Chart(qualityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Quality', 'Issues'],
+                    datasets: [{
+                        data: [qualityScore, 100 - qualityScore],
+                        backgroundColor: [qualityColor, 'rgba(255, 255, 255, 0.1)'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    afterDraw: function(chart) {
+                        const ctx = chart.ctx;
+                        const centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+                        const centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+
+                        ctx.save();
+                        ctx.font = 'bold 36px sans-serif';
+                        ctx.fillStyle = qualityColor;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(qualityScore + '%', centerX, centerY - 10);
+
+                        ctx.font = '14px sans-serif';
+                        ctx.fillStyle = '#B2BAC2';
+                        ctx.fillText('Quality', centerX, centerY + 20);
+                        ctx.restore();
+                    }
+                }]
+            });
+
+            // 2. Issues Breakdown (Pie)
+            const issuesCtx = document.getElementById('issuesChart').getContext('2d');
+            const issueTypes = {
+                'Missing Values': Object.keys(analysis.missing_values).length,
+                'Duplicates': analysis.duplicates > 0 ? 1 : 0,
+                'Outliers': Object.keys(analysis.outliers).length,
+                'Invalid Values': Object.keys(analysis.invalid_values).length,
+                'Categorical Issues': Object.keys(analysis.categorical_issues).length
+            };
+
+            const issueLabels = Object.keys(issueTypes).filter(key => issueTypes[key] > 0);
+            const issueData = issueLabels.map(key => issueTypes[key]);
+
+            issuesChart = new Chart(issuesCtx, {
+                type: 'pie',
+                data: {
+                    labels: issueLabels,
+                    datasets: [{
+                        data: issueData,
+                        backgroundColor: [
+                            '#EF5350',
+                            '#FFA726',
+                            '#FFCA28',
+                            '#66BB6A',
+                            '#42A5F5'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#0A1929'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#E7EBF0',
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + ' column(s)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 3. Missing Values Bar Chart
+            const missingCtx = document.getElementById('missingValuesChart').getContext('2d');
+            const missingData = analysis.missing_values;
+            const missingColumns = Object.keys(missingData).slice(0, 10); // Top 10
+            const missingCounts = missingColumns.map(col => missingData[col].count);
+
+            missingValuesChart = new Chart(missingCtx, {
+                type: 'bar',
+                data: {
+                    labels: missingColumns,
+                    datasets: [{
+                        label: 'Missing Values',
+                        data: missingCounts,
+                        backgroundColor: '#42A5F5',
+                        borderColor: '#1976D2',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#B2BAC2',
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#B2BAC2',
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const col = context.label;
+                                    const percentage = missingData[col].percentage;
+                                    return `${context.parsed.y} missing (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render prediction visualizations
+        function renderPredictionCharts(results) {
+            // Destroy existing charts
+            if (predictionDistChart) predictionDistChart.destroy();
+            if (confidenceDistChart) confidenceDistChart.destroy();
+
+            // Calculate distributions
+            const positive = results.filter(r => r.prediction === 1).length;
+            const negative = results.filter(r => r.prediction === 0).length;
+
+            // 1. Prediction Distribution (Pie)
+            const predCtx = document.getElementById('predictionDistChart').getContext('2d');
+            predictionDistChart = new Chart(predCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Positive', 'Negative'],
+                    datasets: [{
+                        data: [positive, negative],
+                        backgroundColor: ['#66BB6A', '#EF5350'],
+                        borderWidth: 2,
+                        borderColor: '#0A1929'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#E7EBF0',
+                                padding: 15,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = positive + negative;
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Confidence Distribution (Histogram)
+            const confCtx = document.getElementById('confidenceDistChart').getContext('2d');
+
+            // Create bins for confidence levels
+            const bins = [0, 0, 0, 0, 0]; // 0-20%, 20-40%, 40-60%, 60-80%, 80-100%
+            results.forEach(r => {
+                const conf = r.confidence * 100;
+                const binIndex = Math.min(Math.floor(conf / 20), 4);
+                bins[binIndex]++;
+            });
+
+            confidenceDistChart = new Chart(confCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                    datasets: [{
+                        label: 'Number of Predictions',
+                        data: bins,
+                        backgroundColor: [
+                            '#EF5350',
+                            '#FFA726',
+                            '#FFCA28',
+                            '#66BB6A',
+                            '#4CAF50'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#B2BAC2',
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#B2BAC2'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Predictions: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Show the charts container
+            document.getElementById('predictionCharts').style.display = 'block';
+        }
+
+        // Display analysis results
+        function displayAnalysis(analysis) {
+            document.getElementById('analysisPanel').style.display = 'block';
+
+            // Render charts
+            renderDataQualityCharts(analysis);
+
+            // Display summary statistics
+            const summaryDiv = document.getElementById('analysisSummary');
+            summaryDiv.innerHTML = `
+                <div style="padding: 12px; background: rgba(66, 165, 245, 0.1); border-radius: 6px; border-left: 3px solid #42A5F5;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #42A5F5;">${analysis.quality_score}%</div>
+                    <div style="font-size: 0.9em; color: #B2BAC2; margin-top: 5px;">Data Quality</div>
+                </div>
+                <div style="padding: 12px; background: rgba(66, 165, 245, 0.1); border-radius: 6px; border-left: 3px solid #42A5F5;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #42A5F5;">${analysis.total_rows}</div>
+                    <div style="font-size: 0.9em; color: #B2BAC2; margin-top: 5px;">Total Rows</div>
+                </div>
+                <div style="padding: 12px; background: rgba(66, 165, 245, 0.1); border-radius: 6px; border-left: 3px solid #42A5F5;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #42A5F5;">${analysis.duplicates}</div>
+                    <div style="font-size: 0.9em; color: #B2BAC2; margin-top: 5px;">Duplicates</div>
+                </div>
+                <div style="padding: 12px; background: rgba(66, 165, 245, 0.1); border-radius: 6px; border-left: 3px solid #42A5F5;">
+                    <div style="font-size: 1.5em; font-weight: bold; color: #42A5F5;">${Object.keys(analysis.missing_values).length}</div>
+                    <div style="font-size: 0.9em; color: #B2BAC2; margin-top: 5px;">Columns w/ Missing</div>
+                </div>
+            `;
+
+            // Display suggestions
+            const suggestionsDiv = document.getElementById('suggestionsList');
+            if (analysis.suggestions.length === 0) {
+                suggestionsDiv.innerHTML = '<p style="color: #4CAF50;">No issues detected - data is clean!</p>';
+                return;
+            }
+
+            suggestionsDiv.innerHTML = analysis.suggestions.map((sug, index) => `
+                <div style="display: flex; align-items: start; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.03); border-radius: 6px; border-left: 3px solid ${sug.recommended ? '#66BB6A' : '#FFA726'};">
+                    <input type="checkbox" id="sug-${index}" ${sug.recommended ? 'checked' : ''} style="margin-right: 12px; margin-top: 3px; width: 18px; height: 18px;">
+                    <div style="flex: 1;">
+                        <div style="color: ${sug.recommended ? '#66BB6A' : '#FFA726'}; font-weight: 500; margin-bottom: 5px;">${sug.issue}</div>
+                        <div style="color: #B2BAC2; font-size: 0.9em;">Action: ${sug.action}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Apply cleaning and predict
+        document.getElementById('approveBtn').addEventListener('click', async function() {
+            if (!uploadedFile || !currentDomain || !analysisData) return;
+
+            showSpinner();
+
+            // Collect approved suggestions
+            const approvedSuggestions = analysisData.suggestions.map((sug, index) => ({
+                ...sug,
+                approved: document.getElementById(`sug-${index}`).checked
+            }));
+
+            const customNotes = document.getElementById('customNotes').value;
+
+            const formData = new FormData();
+            formData.append('file', uploadedFile);
+            formData.append('domain', currentDomain);
+            formData.append('suggestions', JSON.stringify(approvedSuggestions));
+            formData.append('custom_notes', customNotes);
+
+            try {
+                const response = await fetch(`${API_BASE}/clean-and-predict`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                hideSpinner();
+
+                if (data.success) {
+                    cleaningResults = data;
+                    cleanedFilename = data.cleaned_filename;
+
+                    // Show cleaning log
+                    if (data.cleaning_log && data.cleaning_log.length > 0) {
+                        const logDiv = document.getElementById('cleaningLog');
+                        const contentDiv = document.getElementById('cleaningLogContent');
+                        contentDiv.innerHTML = data.cleaning_log.map(item =>
+                            `<div style="padding: 5px 0; color: #B2BAC2; font-size: 0.9em;"><span style="color: #4CAF50; margin-right: 8px;">✓</span>${item}</div>`
+                        ).join('');
+                        logDiv.style.display = 'block';
+                    }
+
+                    // Show results
+                    displayBatchResults(data);
+
+                    // Enable download buttons
+                    document.getElementById('downloadSection').style.display = 'flex';
+                    document.getElementById('downloadCleanedBtn').disabled = false;
+                    document.getElementById('downloadReportBtn').disabled = false;
+                } else {
+                    showError(data.error || 'Cleaning and prediction failed');
+                }
+            } catch (error) {
+                hideSpinner();
+                showError('Error: ' + error.message);
+            }
+        });
+
+        // Download cleaned CSV
+        document.getElementById('downloadCleanedBtn').addEventListener('click', function() {
+            if (cleanedFilename) {
+                window.location.href = `${API_BASE}/download-cleaned-csv/${cleanedFilename}`;
+            }
+        });
+
+        // Download prediction report
+        document.getElementById('downloadReportBtn').addEventListener('click', async function() {
+            if (!cleaningResults) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/download-prediction-report`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        results: cleaningResults.results,
+                        domain: cleaningResults.domain,
+                        cleaning_log: cleaningResults.cleaning_log
+                    })
+                });
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `prediction_report_${cleaningResults.domain}_${new Date().getTime()}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                showError('Error downloading report: ' + error.message);
+            }
+        });
+
+        // Initialize
+        checkAPI();
+        setInterval(checkAPI, 30000);
+    </script>
+</body>
+</html>

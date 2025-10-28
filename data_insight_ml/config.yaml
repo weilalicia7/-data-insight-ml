@@ -1,0 +1,64 @@
+# Data Insight ML Configuration
+# Customize these settings for your specific use case
+
+# Data Configuration
+data:
+  target_column: "donated_again"  # Name of the column you want to predict
+  id_columns: ["id", "ID", "user_id", "customer_id", "donor_id", "participant_id", "application_id"]  # Columns to exclude from training
+  test_size: 0.2  # Fraction of data to use for testing (0.2 = 20%)
+  random_state: 42  # For reproducibility
+
+# Model Configuration
+models:
+  # Which models to train (set to true to enable)
+  random_forest: true
+  logistic_regression: true
+  xgboost: true
+
+  # Random Forest parameters
+  rf_params:
+    n_estimators: 500
+    max_depth: 7
+    min_samples_split: 20
+    min_samples_leaf: 10
+    class_weight: "balanced"
+
+  # Logistic Regression parameters
+  lr_params:
+    max_iter: 1000
+    class_weight: "balanced"
+
+  # XGBoost parameters
+  xgb_params:
+    n_estimators: 300
+    max_depth: 5
+    learning_rate: 0.1
+    scale_pos_weight: 1
+
+# Feature Engineering
+features:
+  auto_detect: true  # Automatically detect feature types
+  scale_numeric: true  # Standardize numeric features
+  encode_categorical: true  # One-hot encode categorical features
+  handle_missing: "auto"  # Options: "auto", "drop", "fill_mean", "fill_median"
+  max_categories: 20  # Max unique values for categorical encoding
+
+  # Date features (if date columns detected)
+  extract_date_features:
+    day_of_week: true
+    month: true
+    quarter: true
+    is_weekend: true
+
+# Training Configuration
+training:
+  cross_validation_folds: 10
+  verbose: true  # Print detailed training information
+  save_feature_importance: true
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: true  # Set to false in production
+  cors_enabled: true
